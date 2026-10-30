@@ -7,15 +7,14 @@ export function Layout() {
   const [menuOpen, setMenuOpen] = useState(false);
   const mainRef = useRef<HTMLElement>(null);
   const { pathname } = useLocation();
-  const firstRender = useRef(true);
+  const previousPath = useRef(pathname);
 
   // After client-side navigation, move focus to the new page so keyboard and
   // screen reader users start at its content, as they would on a full page load.
+  // Comparing paths (not "first render") keeps this correct when StrictMode re-runs effects.
   useEffect(() => {
-    if (firstRender.current) {
-      firstRender.current = false;
-      return;
-    }
+    if (previousPath.current === pathname) return;
+    previousPath.current = pathname;
     mainRef.current?.focus({ preventScroll: true });
   }, [pathname]);
 

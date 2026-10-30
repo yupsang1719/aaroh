@@ -8,6 +8,13 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* Long titles (and long words in them) wrap instead of spilling out of their column. */
+  h1,
+  h2,
+  h3 {
+    overflow-wrap: break-word;
+  }
+
   ::selection {
     @apply bg-fg text-bg;
   }
@@ -26,6 +33,7 @@
     *::before,
     *::after {
       animation-duration: 0.01ms !important;
+      animation-delay: 0s !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
@@ -42,6 +50,14 @@
   /* Small uppercase label above sections and in meta rows. */
   .eyebrow {
     @apply text-xs font-medium uppercase tracking-[0.14em] text-muted;
+  }
+
+  /* Scroll reveal (see <Reveal>): content fades and rises in once. */
+  .reveal {
+    @apply transition-[opacity,transform] duration-700 ease-out;
+  }
+  .reveal[data-hidden] {
+    @apply translate-y-6 opacity-0;
   }
 
   /* Text link: hairline underline that darkens on hover. */

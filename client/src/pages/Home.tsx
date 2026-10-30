@@ -1,12 +1,29 @@
 import { Seo } from '../components/Seo';
-import { PageHeader } from '../components/PageHeader';
+import { Hero, HeroPlaceholder } from '../components/Hero';
+import { FeaturedRelease } from '../components/FeaturedRelease';
+import { Reveal } from '../components/Reveal';
+import { useReleases, useSettings } from '../lib/useApi';
 
-// Phase 3 stub: the real page is built in a later phase.
 export default function HomePage() {
+  const settings = useSettings();
+  const releases = useReleases();
+  const featured = releases.data?.find((r) => r.featured) ?? releases.data?.[0];
+
   return (
     <>
-      <Seo />
-      <PageHeader title="Home" />
+      <Seo description={settings.data?.tagline} />
+
+      {settings.data ? <Hero hero={settings.data.hero} /> : <HeroPlaceholder />}
+
+      {settings.data?.tagline && (
+        <Reveal className="wrap py-16 md:py-28">
+          <p className="max-w-5xl font-display text-display-md font-medium">
+            {settings.data.tagline}
+          </p>
+        </Reveal>
+      )}
+
+      {featured && <FeaturedRelease release={featured} />}
     </>
   );
 }

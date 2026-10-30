@@ -24,16 +24,34 @@ export default {
       },
       // Fluid display sizes: huge on desktop, still confident at 375px.
       fontSize: {
-        'display-xl': ['clamp(4rem, 17vw, 15rem)', { lineHeight: '0.82', letterSpacing: '-0.05em' }],
-        'display-lg': ['clamp(2.75rem, 8vw, 7.5rem)', { lineHeight: '0.9', letterSpacing: '-0.04em' }],
+        'display-xl': [
+          'clamp(4rem, 17vw, 15rem)',
+          { lineHeight: '0.82', letterSpacing: '-0.05em' },
+        ],
+        'display-lg': [
+          'clamp(2.75rem, 8vw, 7.5rem)',
+          { lineHeight: '0.9', letterSpacing: '-0.04em' },
+        ],
         'display-md': ['clamp(2rem, 4.5vw, 4rem)', { lineHeight: '1', letterSpacing: '-0.03em' }],
-        'display-sm': ['clamp(1.5rem, 2.6vw, 2.25rem)', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+        'display-sm': [
+          'clamp(1.5rem, 2.6vw, 2.25rem)',
+          { lineHeight: '1.1', letterSpacing: '-0.02em' },
+        ],
       },
       maxWidth: {
         site: '1680px',
       },
       transitionTimingFunction: {
         out: 'cubic-bezier(0.22, 1, 0.36, 1)',
+      },
+      keyframes: {
+        rise: {
+          from: { opacity: '0', transform: 'translateY(16px)' },
+          to: { opacity: '1', transform: 'none' },
+        },
+      },
+      animation: {
+        rise: 'rise 900ms cubic-bezier(0.22, 1, 0.36, 1) both',
       },
     },
   },
