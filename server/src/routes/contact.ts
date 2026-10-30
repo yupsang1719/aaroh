@@ -1,20 +1,18 @@
 import { Router } from 'express';
 import { rateLimit } from 'express-rate-limit';
 import { contactInputSchema } from '@aaroh/shared';
-import type { ContactStore } from '../services/contactStore';
 import type { Mailer } from '../services/mailer';
-import { hashIp } from '../lib/hashIp';
+import { HttpError } from '../middleware/errors';
 
 export interface ContactRouterDeps {
-  store: ContactStore;
   mailer: Mailer;
-  ipHashSalt: string;
   rateLimit: { windowMs: number; limit: number };
 }
 
-export function contactRouter({ store, mailer, ipHashSalt, rateLimit: rl }: ContactRouterDeps) {
+export function contactRouter({ mailer, rateLimit: rl }: ContactRouterDeps) {
   const router = Router();
 
+  // Per-IP limit, held in memory only (nothing about visitors is stored).
   const limiter = rateLimit({
     windowMs: rl.windowMs,
     limit: rl.limit,
@@ -32,19 +30,18 @@ export function contactRouter({ store, mailer, ipHashSalt, rateLimit: rl }: Cont
       return;
     }
 
-    const record = {
-      name: input.name,
-      email: input.email,
-      type: input.type,
-      message: input.message,
-      ipHash: hashIp(req.ip ?? 'unknown', ipHashSalt),
-    };
-    await store.save(record);
-
-    // The message is safely stored, so a mail failure must not fail the request.
-    mailer.notifyContact(record).catch((err) => {
-      console.error('[contact] Notification email failed:', err);
-    });
+    try {
+      await mailer.sendContact({
+        name: input.name,
+        email: input.email,
+        type: input.type,
+        message: input.message,
+      });
+    } catch (err) {
+      console.error('[contact] Could not send message:', err);
+      // Emailing is the only delivery, so the visitor must know it did not arrive.
+      throw new HttpError(502, 'Your message could not be sent');
+    }
 
     res.status(201).json({ ok: true });
   });

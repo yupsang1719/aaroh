@@ -15,7 +15,7 @@ export const DEFAULT_DESCRIPTION =
 export const DEFAULT_SHARE_IMAGE = '/brand/og-default.png';
 export const LOGO_IMAGE = '/brand/icon-512.png';
 
-export type StaticPage = 'home' | 'work' | 'process' | 'about' | 'contact';
+export type StaticPage = 'home' | 'work' | 'process' | 'about' | 'contact' | 'privacy' | 'legal';
 
 export interface PageMeta {
   /** Page name; rendered as "Title — Aaroh". Undefined on the home page. */
@@ -33,6 +33,8 @@ export const STATIC_PAGE_PATHS: Record<StaticPage, string> = {
   process: '/process',
   about: '/about',
   contact: '/contact',
+  privacy: '/privacy',
+  legal: '/legal',
 };
 
 export function staticPageMeta(page: StaticPage, settings?: SiteSettings | null): PageMeta {
@@ -63,6 +65,18 @@ export function staticPageMeta(page: StaticPage, settings?: SiteSettings | null)
         title: 'Contact',
         description:
           'Get in touch with Aaroh about collaborations, press, licensing or anything else.',
+        type: 'website',
+      };
+    case 'privacy':
+      return {
+        title: 'Privacy and cookies',
+        description: 'How Aaroh handles personal data and cookies on this website.',
+        type: 'website',
+      };
+    case 'legal':
+      return {
+        title: 'Company information',
+        description: 'Legal and company information for Aaroh.',
         type: 'website',
       };
   }

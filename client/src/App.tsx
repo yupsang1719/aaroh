@@ -25,6 +25,8 @@ const router = createBrowserRouter([
           { path: 'process', lazy: page(() => import('./pages/Process')) },
           { path: 'about', lazy: page(() => import('./pages/About')) },
           { path: 'contact', lazy: page(() => import('./pages/Contact')) },
+          { path: 'privacy', lazy: page(() => import('./pages/Privacy')) },
+          { path: 'legal', lazy: page(() => import('./pages/Legal')) },
           { path: '*', lazy: page(() => import('./pages/NotFound')) },
         ],
       },

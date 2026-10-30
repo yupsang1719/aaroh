@@ -1,34 +1,45 @@
-import { afterAll, beforeAll } from 'vitest';
-import mongoose from 'mongoose';
-import { MongoMemoryServer } from 'mongodb-memory-server';
+import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { releaseSchema, siteSettingsSchema, type Release, type SiteSettings } from '@aaroh/shared';
+import { z } from 'zod';
 import { createApp, type AppDeps } from '../src/app';
 import { loadEnv } from '../src/config/env';
-import { MongoContentProvider } from '../src/content/MongoContentProvider';
-import { mongoContactStore } from '../src/services/contactStore';
+import { JsonContentProvider } from '../src/content/JsonContentProvider';
 import type { Mailer } from '../src/services/mailer';
 
-/** Starts a throwaway MongoDB for the current test file. */
-export function useTestDatabase() {
-  let mongo: MongoMemoryServer;
-  beforeAll(async () => {
-    mongo = await MongoMemoryServer.create();
-    await mongoose.connect(mongo.getUri());
-  });
-  afterAll(async () => {
-    await mongoose.disconnect();
-    await mongo?.stop();
-  });
+const sampleDir = fileURLToPath(new URL('../content-sample', import.meta.url));
+const readSample = (file: string) => JSON.parse(readFileSync(path.join(sampleDir, file), 'utf8'));
+
+/** The sample content (server/content-sample), parsed, as a base for test fixtures. */
+export const sampleSettings: SiteSettings = siteSettingsSchema.parse(readSample('settings.json'));
+export const sampleReleases: Release[] = z.array(releaseSchema).parse(readSample('releases.json'));
+
+/** Writes a throwaway content folder and returns its path. */
+export function makeContentDir(
+  settings: unknown = readSample('settings.json'),
+  releases: unknown = readSample('releases.json'),
+): string {
+  const dir = mkdtempSync(path.join(tmpdir(), 'aaroh-content-'));
+  writeFileSync(path.join(dir, 'settings.json'), JSON.stringify(settings));
+  writeFileSync(path.join(dir, 'releases.json'), JSON.stringify(releases));
+  mkdirSync(path.join(dir, 'media'));
+  writeFileSync(path.join(dir, 'media', 'still.jpg'), 'fake jpeg');
+  return dir;
 }
 
-export const testEnv = loadEnv({ NODE_ENV: 'test', IP_HASH_SALT: 'test-salt' });
+export const testEnv = loadEnv({ NODE_ENV: 'test' });
 
-export function makeApp(overrides: Partial<AppDeps> = {}) {
-  const mailer: Mailer = { async notifyContact() {} };
+export const okMailer = (): Mailer => ({ async sendContact() {} });
+
+export function makeApp(overrides: Partial<AppDeps> & { contentDir?: string } = {}) {
+  const { contentDir = makeContentDir(), ...deps } = overrides;
   return createApp({
     env: testEnv,
-    content: new MongoContentProvider(),
-    contactStore: mongoContactStore,
-    mailer,
-    ...overrides,
+    content: new JsonContentProvider(contentDir, { cache: false }),
+    mailer: okMailer(),
+    mediaDir: path.join(contentDir, 'media'),
+    ...deps,
   });
 }

@@ -4,7 +4,6 @@ import cors from 'cors';
 import compression from 'compression';
 import type { Env } from './config/env';
 import type { ContentProvider } from './content';
-import type { ContactStore } from './services/contactStore';
 import type { Mailer } from './services/mailer';
 import { healthRouter } from './routes/health';
 import { settingsRouter } from './routes/settings';
@@ -18,13 +17,14 @@ import { serveClient } from './seo/serveClient';
 export interface AppDeps {
   env: Env;
   content: ContentProvider;
-  contactStore: ContactStore;
   mailer: Mailer;
+  /** Content media folder (e.g. server/content/media), served at /media. */
+  mediaDir?: string;
   /** Built client (client/dist). When set, the app serves the site itself (production). */
   clientDir?: string;
 }
 
-export function createApp({ env, content, contactStore, mailer, clientDir }: AppDeps) {
+export function createApp({ env, content, mailer, mediaDir, clientDir }: AppDeps) {
   const app = express();
   app.disable('x-powered-by');
   app.set('trust proxy', env.TRUST_PROXY);
@@ -59,9 +59,7 @@ export function createApp({ env, content, contactStore, mailer, clientDir }: App
   app.use(
     '/api/contact',
     contactRouter({
-      store: contactStore,
       mailer,
-      ipHashSalt: env.IP_HASH_SALT,
       rateLimit: {
         windowMs: env.CONTACT_RATE_WINDOW_MINUTES * 60_000,
         limit: env.CONTACT_RATE_LIMIT,
@@ -71,6 +69,10 @@ export function createApp({ env, content, contactStore, mailer, clientDir }: App
   app.use('/api', apiNotFound);
 
   app.use(seoFilesRouter(content, env.SITE_URL));
+  if (mediaDir) {
+    // Content images/video. File names are not hashed, so cache for a day, not forever.
+    app.use('/media', express.static(mediaDir, { maxAge: '1d', index: false, fallthrough: false }));
+  }
   if (clientDir) app.use(serveClient(clientDir, content, env.SITE_URL));
 
   app.use(errorHandler);

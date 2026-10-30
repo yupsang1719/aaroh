@@ -1,39 +1,59 @@
+import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import mongoose from 'mongoose';
 import { loadEnv } from './config/env';
-import { connectDatabase } from './db';
 import { createApp } from './app';
 import { createContentProvider } from './content';
-import { mongoContactStore } from './services/contactStore';
+import { findPlaceholders } from './content/placeholders';
 import { createMailer } from './services/mailer';
 
-const env = loadEnv();
+let env: ReturnType<typeof loadEnv>;
+try {
+  env = loadEnv();
+} catch {
+  process.exit(1); // loadEnv has already printed which variables are wrong
+}
+const production = env.NODE_ENV === 'production';
 
-// MongoDB is always needed: it stores contact messages even when content comes from a CMS.
-await connectDatabase(env.MONGODB_URI, { retry: env.NODE_ENV !== 'production' });
+// Paths are relative to the server folder (works for src/index.ts and the built dist/index.js).
+const serverDir = fileURLToPath(new URL('..', import.meta.url));
+const contentDir = env.CONTENT_DIR
+  ? path.resolve(env.CONTENT_DIR)
+  : path.join(serverDir, 'content');
+
+// Never go live with placeholder content.
+const placeholders = await findPlaceholders(contentDir);
+if (placeholders.length > 0) {
+  const list = placeholders.map((p) => `  - ${p}`).join('\n');
+  if (production) {
+    console.error(
+      `Refusing to start: content in ${contentDir} still has PLACEHOLDER values:\n${list}`,
+    );
+    process.exit(1);
+  }
+  console.warn(
+    `[content] ${placeholders.length} PLACEHOLDER values to replace before going live:\n${list}`,
+  );
+}
+
+const content = createContentProvider(env, contentDir);
+// Fail at startup, not on the first visitor, if the content files are invalid.
+await Promise.all([content.getSettings(), content.listReleases()]);
 
 const app = createApp({
   env,
-  content: createContentProvider(env),
-  contactStore: mongoContactStore,
+  content,
   mailer: createMailer(env),
+  mediaDir: path.join(contentDir, 'media'),
   // In production this server also serves the built site. In development Vite does.
-  clientDir:
-    env.NODE_ENV === 'production'
-      ? (env.CLIENT_DIST_DIR ?? fileURLToPath(new URL('../../client/dist', import.meta.url)))
-      : undefined,
+  clientDir: production
+    ? (env.CLIENT_DIST_DIR ?? path.join(serverDir, '../client/dist'))
+    : undefined,
 });
 
 const server = app.listen(env.PORT, () => {
-  console.log(
-    `Aaroh server listening on http://localhost:${env.PORT} (content: ${env.CONTENT_SOURCE})`,
-  );
+  console.log(`Aaroh server listening on http://localhost:${env.PORT} (content: ${contentDir})`);
 });
 
-async function shutdown() {
-  server.close();
-  await mongoose.disconnect();
-  process.exit(0);
-}
+const shutdown = () => server.close(() => process.exit(0));
 process.on('SIGTERM', shutdown);
 process.on('SIGINT', shutdown);

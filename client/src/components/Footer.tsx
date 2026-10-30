@@ -1,6 +1,6 @@
-import { useLocation } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { useSettings } from '../lib/useApi';
-import { SITE_NAME } from '../lib/site';
+import { CompanyDetails } from './CompanyDetails';
 import { SocialLinks, hasSocials } from './SocialLinks';
 
 export function Footer() {
@@ -41,9 +41,28 @@ export function Footer() {
       )}
 
       <div className="wrap">
-        <p className={`py-6 text-sm text-muted ${showContact ? 'border-t border-line' : ''}`}>
-          © {new Date().getFullYear()} {SITE_NAME}
-        </p>
+        <div
+          className={`grid gap-4 py-6 text-sm text-muted md:grid-cols-12 md:gap-10 ${showContact ? 'border-t border-line' : ''}`}
+        >
+          <div className="md:col-span-8">
+            {settings && <CompanyDetails legal={settings.legal} compact />}
+          </div>
+          <ul className="flex flex-wrap gap-x-6 gap-y-2 md:col-span-4 md:justify-end">
+            <li>
+              <Link to="/privacy" className="link">
+                Privacy and cookies
+              </Link>
+            </li>
+            <li>
+              <Link to="/legal" className="link">
+                Company information
+              </Link>
+            </li>
+            <li>
+              © {new Date().getFullYear()} {settings?.legal.companyName ?? 'Aaroh'}
+            </li>
+          </ul>
+        </div>
       </div>
     </footer>
   );

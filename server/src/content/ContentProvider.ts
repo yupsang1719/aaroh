@@ -1,7 +1,8 @@
 import type { Release, ReleaseSummary, SiteSettings } from '@aaroh/shared';
 
 /**
- * Everything the site reads goes through this interface. To move content to a headless CMS,
+ * Everything the site reads goes through this interface. Content currently comes from JSON
+ * files (JsonContentProvider). To move it to a headless CMS,
  * implement it (e.g. SanityContentProvider), register it in ./index.ts and set CONTENT_SOURCE.
  *
  * Implementations must:

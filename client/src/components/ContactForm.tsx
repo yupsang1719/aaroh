@@ -1,7 +1,9 @@
 import { useRef, useState, type FormEvent } from 'react';
 import type { ContactInput } from '@aaroh/shared/contact';
 import { CONTACT_TYPES, CONTACT_TYPE_LABELS } from '@aaroh/shared/contact-types';
+import { Link } from 'react-router';
 import { ApiError, api } from '../lib/api';
+import { useSettings } from '../lib/useApi';
 import { cn } from '../lib/cn';
 
 type Field = 'name' | 'email' | 'type' | 'message';
@@ -33,6 +35,8 @@ export function ContactForm() {
   const [serverMessage, setServerMessage] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
   const sentRef = useRef<HTMLHeadingElement>(null);
+  const email = useSettings().data?.contactEmail;
+  const emailUs = email ? `email us at ${email}` : 'email us directly';
 
   const set = (field: keyof ContactInput, value: string) => {
     const next = { ...values, [field]: value };
@@ -85,8 +89,8 @@ export function ContactForm() {
       }
       setServerMessage(
         err instanceof ApiError && err.status === 429
-          ? 'You have sent several messages in a short time. Please try again later, or email us directly.'
-          : 'Your message could not be sent. Please try again, or email us directly.',
+          ? `You have sent several messages in a short time. Please try again later, or ${emailUs}.`
+          : `Your message could not be sent. Please try again, or ${emailUs}.`,
       );
     }
   };
@@ -219,6 +223,13 @@ export function ContactForm() {
         >
           {status === 'sending' ? 'Sending…' : 'Send message'}
         </button>
+        <p className="max-w-xl text-sm text-muted">
+          We use your details only to reply to you. See our{' '}
+          <Link to="/privacy" className="link">
+            privacy notice
+          </Link>
+          .
+        </p>
         <p role="alert" className="text-sm font-medium text-accent empty:hidden">
           {status === 'error' ? serverMessage : ''}
         </p>

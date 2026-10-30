@@ -110,10 +110,23 @@ function HeroVideo({ src, poster }: { src: string; poster?: string }) {
   );
 }
 
+/** No images yet: the wordmark on its own, large and confident. */
+function WordmarkOnly() {
+  return (
+    <div className="wrap flex min-h-[40svh] items-end pb-2 md:min-h-[55svh] md:pb-4">
+      {/* No entrance animation: this is the largest element, so it should paint at once. */}
+      <h1>
+        <Logo className="text-[28vw] md:text-display-xl" />
+      </h1>
+    </div>
+  );
+}
+
 export function Hero({ hero }: { hero: SiteSettings['hero'] }) {
   if (hero.mode === 'video' && hero.videoUrl) {
     return <HeroVideo src={hero.videoUrl} poster={hero.posterUrl} />;
   }
+  if (hero.collageImages.length === 0) return <WordmarkOnly />;
   return <Collage images={hero.collageImages} />;
 }
 

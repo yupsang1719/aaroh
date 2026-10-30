@@ -1,30 +1,36 @@
 {
-  "_comment": "PLACEHOLDER site settings. contactEmail hello@aaroh.co.uk is a PLACEHOLDER until confirmed; social URLs are PLACEHOLDERs.",
+  "_comment": "SAMPLE content for previewing the design locally (npm run dev:sample). Never used in production: it is full of PLACEHOLDERs.",
   "companyName": "Aaroh",
   "tagline": "PLACEHOLDER: Original music and the films that go with it.",
   "hero": {
     "mode": "collage",
     "videoUrl": "",
-    "posterUrl": "/placeholder/hero-poster.jpg",
+    "posterUrl": "/media/hero-poster.jpg",
     "collageImages": [
       {
-        "url": "/placeholder/first-light-still-1.jpg",
+        "url": "/media/first-light-still-1.jpg",
         "alt": "PLACEHOLDER: Still from First Light"
       },
       {
-        "url": "/placeholder/low-tide-still-2.jpg",
+        "url": "/media/low-tide-still-2.jpg",
         "alt": "PLACEHOLDER: Behind the scenes on Low Tide"
       },
       {
-        "url": "/placeholder/first-light-still-2.jpg",
+        "url": "/media/first-light-still-2.jpg",
         "alt": "PLACEHOLDER: Behind the scenes on First Light"
       },
-      { "url": "/placeholder/low-tide-still-1.jpg", "alt": "PLACEHOLDER: Still from Low Tide" },
       {
-        "url": "/placeholder/first-light-still-3.jpg",
+        "url": "/media/low-tide-still-1.jpg",
+        "alt": "PLACEHOLDER: Still from Low Tide"
+      },
+      {
+        "url": "/media/first-light-still-3.jpg",
         "alt": "PLACEHOLDER: Close-up from First Light"
       },
-      { "url": "/placeholder/low-tide-still-3.jpg", "alt": "PLACEHOLDER: Night shot from Low Tide" }
+      {
+        "url": "/media/low-tide-still-3.jpg",
+        "alt": "PLACEHOLDER: Night shot from Low Tide"
+      }
     ]
   },
   "about": {
@@ -36,10 +42,18 @@
     {
       "name": "PLACEHOLDER Name",
       "role": "Founder, Producer",
-      "photoUrl": "/placeholder/team-1.jpg"
+      "photoUrl": "/media/team-1.jpg"
     },
-    { "name": "PLACEHOLDER Name", "role": "Director", "photoUrl": "/placeholder/team-2.jpg" },
-    { "name": "PLACEHOLDER Name", "role": "Editor", "photoUrl": "/placeholder/team-3.jpg" }
+    {
+      "name": "PLACEHOLDER Name",
+      "role": "Director",
+      "photoUrl": "/media/team-2.jpg"
+    },
+    {
+      "name": "PLACEHOLDER Name",
+      "role": "Editor",
+      "photoUrl": "/media/team-3.jpg"
+    }
   ],
   "processSteps": [
     {
@@ -53,19 +67,19 @@
     {
       "title": "Studio",
       "text": "PLACEHOLDER: Recording, arranging and mixing the final track.",
-      "imageUrl": "/placeholder/process-studio.jpg",
+      "imageUrl": "/media/process-studio.jpg",
       "imageAlt": "PLACEHOLDER: The studio during a session"
     },
     {
       "title": "Shoot",
       "text": "PLACEHOLDER: A small crew, a clear idea and usually not much time.",
-      "imageUrl": "/placeholder/process-shoot.jpg",
+      "imageUrl": "/media/process-shoot.jpg",
       "imageAlt": "PLACEHOLDER: Crew on a video shoot"
     },
     {
       "title": "Edit",
       "text": "PLACEHOLDER: Cutting the film to the song, then grading and finishing.",
-      "imageUrl": "/placeholder/process-edit.jpg",
+      "imageUrl": "/media/process-edit.jpg",
       "imageAlt": "PLACEHOLDER: Editing suite"
     },
     {
@@ -79,5 +93,17 @@
     "youtube": "https://www.youtube.com/@PLACEHOLDER",
     "tiktok": "https://www.tiktok.com/@PLACEHOLDER",
     "spotify": "https://open.spotify.com/PLACEHOLDER"
+  },
+  "workEmptyNote": "Our first release is on its way.",
+  "legal": {
+    "companyName": "PLACEHOLDER Aaroh Ltd",
+    "companyNumber": "PLACEHOLDER 00000000",
+    "registeredIn": "England and Wales",
+    "registeredOffice": "PLACEHOLDER 1 Example Street\nLondon\nAB1 2CD",
+    "vatNumber": "",
+    "icoRegistrationNumber": "",
+    "privacyUpdated": "2026-10-30",
+    "hostingProvider": "PLACEHOLDER Hosting Ltd",
+    "emailProvider": "PLACEHOLDER Mail Ltd"
   }
 }

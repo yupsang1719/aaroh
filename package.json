@@ -12,15 +12,16 @@
     "client"
   ],
   "scripts": {
-    "dev": "concurrently -n db,server,client -c gray,blue,magenta \"npm:dev:db -w server\" \"npm:dev -w server\" \"npm:dev -w client\"",
+    "dev": "concurrently -n server,client -c blue,magenta \"npm:dev -w server\" \"npm:dev -w client\"",
     "build": "npm run build -w client && npm run build -w server",
     "start": "npm run start -w server",
-    "seed": "npm run seed -w server",
     "test": "npm run test -w server -w client --if-present",
     "lint": "eslint .",
     "typecheck": "npm run typecheck -w shared -w server -w client",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "dev:sample": "concurrently -n server,client -c blue,magenta \"npm:dev:sample -w server\" \"npm:dev -w client\"",
+    "check:content": "npm run check:content -w server --"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",

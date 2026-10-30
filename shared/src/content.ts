@@ -88,6 +88,30 @@ export const processStepSchema = z.object({
   imageAlt: blankable(z.string().trim()),
 });
 
+export const REGISTERED_IN = ['England and Wales', 'Scotland', 'Northern Ireland'] as const;
+
+/**
+ * Company details. A UK private limited company must show its registered name, number,
+ * place of registration and registered office address on its website (Companies Act 2006;
+ * Company, LLP and Business (Names and Trading Disclosures) Regulations 2015).
+ */
+export const legalSchema = z.object({
+  /** Registered name exactly as at Companies House, e.g. "Aaroh Ltd". */
+  companyName: z.string().trim().min(1),
+  companyNumber: z.string().trim().min(1),
+  registeredIn: z.enum(REGISTERED_IN),
+  /** Registered office address; one line per address line. */
+  registeredOffice: z.string().trim().min(1),
+  vatNumber: blankable(z.string().trim()),
+  /** ICO data protection fee registration number (optional to show). */
+  icoRegistrationNumber: blankable(z.string().trim()),
+  /** Date the privacy notice was last reviewed, "YYYY-MM-DD". */
+  privacyUpdated: z.iso.date(),
+  /** Named service providers, shown in the privacy notice (optional but recommended). */
+  hostingProvider: blankable(z.string().trim()),
+  emailProvider: blankable(z.string().trim()),
+});
+
 export const siteSettingsSchema = z.object({
   companyName: z.string().trim().min(1).default('Aaroh'),
   tagline: z.string().trim(),
@@ -113,6 +137,9 @@ export const siteSettingsSchema = z.object({
       spotify: blankable(httpUrl),
     })
     .default({}),
+  /** Shown on the Work page while there are no releases. */
+  workEmptyNote: z.string().trim().default('Our first release is on its way.'),
+  legal: legalSchema,
 });
 
 export type Image = z.infer<typeof imageSchema>;
@@ -125,3 +152,4 @@ export type ReleaseDetail = z.infer<typeof releaseDetailSchema>;
 export type TeamMember = z.infer<typeof teamMemberSchema>;
 export type ProcessStep = z.infer<typeof processStepSchema>;
 export type SiteSettings = z.infer<typeof siteSettingsSchema>;
+export type LegalDetails = z.infer<typeof legalSchema>;

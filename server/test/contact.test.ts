@@ -1,10 +1,8 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import request from 'supertest';
-import { ContactMessageModel } from '../src/models/ContactMessage';
 import type { Mailer } from '../src/services/mailer';
-import { makeApp, useTestDatabase } from './helpers';
-
-useTestDatabase();
+import { loadEnv } from '../src/config/env';
+import { makeApp } from './helpers';
 
 const valid = {
   name: 'Test Person',
@@ -14,39 +12,39 @@ const valid = {
   website: '',
 };
 
-function mockMailer() {
-  return { notifyContact: vi.fn<Mailer['notifyContact']>().mockResolvedValue() };
-}
+const mockMailer = () => ({ sendContact: vi.fn<Mailer['sendContact']>().mockResolvedValue() });
 
 describe('POST /api/contact', () => {
-  beforeEach(async () => {
-    await ContactMessageModel.deleteMany({});
-  });
-
-  it('stores a valid message with a hashed IP and sends a notification', async () => {
+  it('emails a valid message (trimmed, without the honeypot field)', async () => {
     const mailer = mockMailer();
     const res = await request(makeApp({ mailer })).post('/api/contact').send(valid);
-
     expect(res.status).toBe(201);
     expect(res.body).toEqual({ ok: true });
-
-    const saved = await ContactMessageModel.find().lean();
-    expect(saved).toHaveLength(1);
-    expect(saved[0]).toMatchObject({ name: 'Test Person', email: 'test@example.com' });
-    expect(saved[0]!.ipHash).toMatch(/^[a-f0-9]{64}$/);
-    expect(saved[0]!.createdAt).toBeInstanceOf(Date);
-    expect(saved[0]).not.toHaveProperty('website');
-    expect(mailer.notifyContact).toHaveBeenCalledOnce();
+    expect(mailer.sendContact).toHaveBeenCalledWith({
+      name: 'Test Person',
+      email: 'test@example.com',
+      type: 'collaboration',
+      message: valid.message,
+    });
   });
 
-  it('rejects invalid input with field errors', async () => {
-    const res = await request(makeApp())
+  it('tells the visitor when the email could not be sent', async () => {
+    const mailer = { sendContact: vi.fn().mockRejectedValue(new Error('SMTP down')) };
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const res = await request(makeApp({ mailer })).post('/api/contact').send(valid);
+    expect(res.status).toBe(502);
+    expect(res.body.error).toMatch(/could not be sent/);
+    error.mockRestore();
+  });
+
+  it('rejects invalid input with field errors and sends nothing', async () => {
+    const mailer = mockMailer();
+    const res = await request(makeApp({ mailer }))
       .post('/api/contact')
       .send({ ...valid, email: 'not-an-email', type: 'spam', message: 'hi' });
-
     expect(res.status).toBe(400);
     expect(Object.keys(res.body.fieldErrors).sort()).toEqual(['email', 'message', 'type']);
-    expect(await ContactMessageModel.countDocuments()).toBe(0);
+    expect(mailer.sendContact).not.toHaveBeenCalled();
   });
 
   it('rejects malformed JSON with 400', async () => {
@@ -57,35 +55,38 @@ describe('POST /api/contact', () => {
     expect(res.status).toBe(400);
   });
 
-  it('pretends to accept honeypot submissions but discards them', async () => {
+  it('pretends to accept honeypot submissions but sends nothing', async () => {
     const mailer = mockMailer();
     const res = await request(makeApp({ mailer }))
       .post('/api/contact')
       .send({ ...valid, website: 'https://spam.example' });
-
     expect(res.status).toBe(201);
-    expect(await ContactMessageModel.countDocuments()).toBe(0);
-    expect(mailer.notifyContact).not.toHaveBeenCalled();
-  });
-
-  it('still succeeds when the notification email fails', async () => {
-    const mailer = { notifyContact: vi.fn().mockRejectedValue(new Error('SMTP down')) };
-    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
-    const res = await request(makeApp({ mailer })).post('/api/contact').send(valid);
-
-    expect(res.status).toBe(201);
-    expect(await ContactMessageModel.countDocuments()).toBe(1);
-    error.mockRestore();
+    expect(mailer.sendContact).not.toHaveBeenCalled();
   });
 
   it('rate limits each IP to 5 messages per window', async () => {
     const app = makeApp();
     for (let i = 0; i < 5; i++) {
-      const ok = await request(app).post('/api/contact').send(valid);
-      expect(ok.status).toBe(201);
+      expect((await request(app).post('/api/contact').send(valid)).status).toBe(201);
     }
     const limited = await request(app).post('/api/contact').send(valid);
     expect(limited.status).toBe(429);
     expect(limited.body.error).toMatch(/too many/i);
+  });
+});
+
+describe('production configuration', () => {
+  it('requires SMTP settings in production so messages are never lost', () => {
+    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
+    expect(() => loadEnv({ NODE_ENV: 'production' })).toThrow();
+    expect(
+      loadEnv({
+        NODE_ENV: 'production',
+        SMTP_HOST: 'smtp.example.com',
+        SMTP_USER: 'u',
+        SMTP_PASS: 'p',
+      }).SMTP_HOST,
+    ).toBe('smtp.example.com');
+    error.mockRestore();
   });
 });

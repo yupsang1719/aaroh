@@ -5,13 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch --env-file-if-exists=.env src/index.ts",
+    "dev:sample": "CONTENT_DIR=content-sample tsx watch --env-file-if-exists=.env src/index.ts",
     "build": "tsup",
     "start": "node --env-file-if-exists=.env dist/index.js",
-    "seed": "tsx --env-file-if-exists=.env seed/seed.ts",
+    "check:content": "tsx scripts/check-content.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc -p tsconfig.json",
-    "dev:db": "tsx --env-file-if-exists=.env scripts/dev-db.ts"
+    "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
     "@aaroh/shared": "*",
@@ -20,7 +20,6 @@
     "express": "^5.3.0",
     "express-rate-limit": "^8.7.2",
     "helmet": "^8.3.0",
-    "mongoose": "^9.11.4",
     "nodemailer": "^10.3.1",
     "zod": "^4.6.7"
   },
@@ -31,7 +30,6 @@
     "@types/node": "^22.20.5",
     "@types/nodemailer": "^8.0.2",
     "@types/supertest": "^6.0.2",
-    "mongodb-memory-server": "^11.3.0",
     "supertest": "^7.3.1",
     "tsup": "^9.0.0",
     "tsx": "^4.23.15",

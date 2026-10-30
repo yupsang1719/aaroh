@@ -1,14 +1,11 @@
 import { mkdirSync, mkdtempSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import request from 'supertest';
 import type { Release } from '@aaroh/shared';
-import { loadSeed, seedReleases, seedSettings } from '../seed/load';
 import type { ContentProvider } from '../src/content';
-import { makeApp, useTestDatabase } from './helpers';
-
-useTestDatabase();
+import { makeApp as makeBaseApp, makeContentDir, sampleReleases, sampleSettings } from './helpers';
 
 /** A minimal stand-in for client/dist. */
 function fakeClientDir() {
@@ -35,23 +32,20 @@ function fakeClientDir() {
 }
 
 const clientDir = fakeClientDir();
-const base = seedReleases[0]!;
+const base = sampleReleases[0]!;
+const seedSettings = sampleSettings;
+const contentDir = makeContentDir(sampleSettings, [
+  { ...base, slug: 'first-light', published: true, order: 1 },
+  { ...base, slug: 'secret', title: 'Secret', published: false },
+]);
+const makeApp = (deps: Parameters<typeof makeBaseApp>[0] = {}) =>
+  makeBaseApp({ contentDir, ...deps });
 const ldJson = (html: string) =>
   [...html.matchAll(/<script data-server-meta type="application\/ld\+json">(.*?)<\/script>/g)].map(
     (m) => JSON.parse(m[1]!),
   );
 
 describe('server-rendered meta for link previews', () => {
-  beforeAll(async () => {
-    await loadSeed(
-      [
-        { ...base, slug: 'first-light', published: true, order: 1 },
-        { ...base, slug: 'secret', title: 'Secret', published: false },
-      ],
-      seedSettings,
-    );
-  });
-
   it('writes release title, description, canonical, image and JSON-LD into the HTML', async () => {
     const res = await request(makeApp({ clientDir })).get('/work/first-light');
     expect(res.status).toBe(200);
@@ -188,7 +182,16 @@ describe('sitemap.xml and robots.txt', () => {
     const res = await request(makeApp()).get('/sitemap.xml');
     expect(res.status).toBe(200);
     expect(res.headers['content-type']).toMatch(/xml/);
-    for (const path of ['/', '/work', '/process', '/about', '/contact', '/work/first-light']) {
+    for (const path of [
+      '/',
+      '/work',
+      '/process',
+      '/about',
+      '/contact',
+      '/privacy',
+      '/legal',
+      '/work/first-light',
+    ]) {
       expect(res.text).toContain(`<loc>https://aaroh.co.uk${path}</loc>`);
     }
     expect(res.text).toContain(`<lastmod>${base.releaseDate}</lastmod>`);

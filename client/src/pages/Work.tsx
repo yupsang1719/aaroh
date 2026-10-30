@@ -6,10 +6,11 @@ import { PageError, PageLoading } from '../components/PageStatus';
 import { Img } from '../components/Img';
 import { Reveal } from '../components/Reveal';
 import { formatYear } from '../lib/format';
-import { useReleases } from '../lib/useApi';
+import { useReleases, useSettings } from '../lib/useApi';
 
 export default function WorkPage() {
   const releases = useReleases();
+  const settings = useSettings();
 
   return (
     <>
@@ -18,7 +19,14 @@ export default function WorkPage() {
 
       {releases.status === 'loading' && <PageLoading />}
       {releases.status === 'error' && <PageError error={releases.error} />}
-      {releases.data && (
+      {releases.data?.length === 0 && (
+        <div className="wrap">
+          <p className="border-t border-line pt-8 font-display text-display-sm font-medium">
+            {settings.data?.workEmptyNote}
+          </p>
+        </div>
+      )}
+      {releases.data && releases.data.length > 0 && (
         <ol className="wrap space-y-20 md:space-y-32">
           {releases.data.map((release, i) => (
             <li key={release.slug}>

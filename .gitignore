@@ -8,5 +8,3 @@ coverage
 .DS_Store
 .vite
 
-# Local development database (npm run dev)
-.data

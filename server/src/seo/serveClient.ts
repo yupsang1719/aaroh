@@ -16,6 +16,8 @@ const VIEW_MODULES: Record<PageView, string> = {
   process: 'src/pages/Process.tsx',
   about: 'src/pages/About.tsx',
   contact: 'src/pages/Contact.tsx',
+  privacy: 'src/pages/Privacy.tsx',
+  legal: 'src/pages/Legal.tsx',
   notFound: 'src/pages/NotFound.tsx',
 };
 

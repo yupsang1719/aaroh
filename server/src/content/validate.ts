@@ -20,8 +20,3 @@ export function toRelease(raw: unknown, source: string): Release | null {
 export function toReleaseSummary(release: Release): ReleaseSummary {
   return releaseSummarySchema.parse(release);
 }
-
-/** Date → "YYYY-MM-DD" in UTC, so a calendar date never shifts by time zone. */
-export function toIsoDate(value: Date | string): string {
-  return new Date(value).toISOString().slice(0, 10);
-}

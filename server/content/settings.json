@@ -1,0 +1,43 @@
+{
+  "_comment": "Live site content. Replace every PLACEHOLDER value: production refuses to start until none are left (check with `npm run check:content`). Images go in content/media/ and are referenced as /media/<file>.",
+  "companyName": "Aaroh",
+  "tagline": "PLACEHOLDER: Original music and the films that go with it.",
+  "hero": {
+    "_comment": "With no collageImages the home page shows the wordmark on its own. Add 3 to 6 stills/photos to get the collage, or set mode to \"video\" with videoUrl and posterUrl.",
+    "mode": "collage",
+    "videoUrl": "",
+    "posterUrl": "",
+    "collageImages": []
+  },
+  "about": {
+    "intro": "PLACEHOLDER: One or two sentences on who Aaroh is.",
+    "story": "PLACEHOLDER: Why you started Aaroh. Separate paragraphs with a blank line (\\n\\n).",
+    "location": "PLACEHOLDER: City, UK"
+  },
+  "_teamComment": "Team members appear on the About page: { \"name\": \"…\", \"role\": \"…\", \"photoUrl\": \"/media/name.jpg\" }. Leave empty to hide the section.",
+  "team": [],
+  "processSteps": [
+    { "title": "Idea", "text": "PLACEHOLDER: How a release starts." },
+    { "title": "Demo", "text": "PLACEHOLDER: How the song takes shape." },
+    { "title": "Studio", "text": "PLACEHOLDER: Recording, arranging and mixing." },
+    { "title": "Shoot", "text": "PLACEHOLDER: Filming the music video." },
+    { "title": "Edit", "text": "PLACEHOLDER: Cutting, grading and finishing the film." },
+    { "title": "Release", "text": "PLACEHOLDER: The song and the film come out together." }
+  ],
+  "contactEmail": "hello@aaroh.co.uk",
+  "_socialsComment": "Add full profile URLs (https://…) for instagram, youtube, tiktok, spotify. Empty ones are not shown.",
+  "socials": {},
+  "workEmptyNote": "Our first release is on its way.",
+  "legal": {
+    "_comment": "Exactly as registered at Companies House. Shown in the footer of every page and on /legal (UK trading disclosure rules).",
+    "companyName": "PLACEHOLDER Aaroh Ltd",
+    "companyNumber": "PLACEHOLDER",
+    "registeredIn": "England and Wales",
+    "registeredOffice": "PLACEHOLDER: Registered office line 1\nTown\nPostcode",
+    "vatNumber": "",
+    "icoRegistrationNumber": "",
+    "privacyUpdated": "2026-10-30",
+    "hostingProvider": "PLACEHOLDER: hosting company, e.g. Render Services, Inc.",
+    "emailProvider": "PLACEHOLDER: email provider, e.g. Google Workspace"
+  }
+}
