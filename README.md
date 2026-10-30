@@ -7,7 +7,7 @@ Live at **https://aaroh.co.uk**.
 - [Run it locally](#run-it-locally)
 - [Editing content](#editing-content)
   - [Adding a release](#adding-a-release)
-- [Contact form email](#contact-form-email)
+- [Contact page and email](#contact-page-and-email)
 - [Deploying to Render](#deploying-to-render)
 - [Pointing aaroh.co.uk at the site](#pointing-aarohcouk-at-the-site)
 - [After going live](#after-going-live)
@@ -30,8 +30,9 @@ One Node.js server does everything in production:
 - **Link previews and SEO**: for every page the server writes the real title, description,
   share image, canonical URL and structured data into the HTML, so links shared on social media
   and messaging apps preview properly. It also serves `sitemap.xml` and `robots.txt`.
-- **Contact form**: each message is emailed to `rlp@aaroh.co.uk`. Nothing is stored on the
-  server.
+- **Contact**: email only for now (`rlp@aaroh.co.uk`), with a copy button and topic links that
+  prefill the subject. A contact form is built in and can be switched on later; its messages are
+  emailed and nothing is stored on the server.
 
 ```
 client/   React website (pages, components, Tailwind theme)
@@ -172,10 +173,26 @@ Good to know:
 4. **Publish:** commit and push. As soon as there is a release, the home page shows it, Work
    lists it, and it is added to the sitemap automatically.
 
-## Contact form email
+## Contact page and email
 
-Messages from the contact form are sent by SMTP to `CONTACT_NOTIFY_TO` (`rlp@aaroh.co.uk`). The
-production server will not start without SMTP settings, so messages are never silently lost.
+**The contact form is switched off.** The Contact page shows `contactEmail` from
+`settings.json` (`rlp@aaroh.co.uk`) in large type, an **Email us** button, a **Copy address**
+button (for visitors whose computer has no email app set up) and topic links (General,
+Collaborations, Press, Licensing) that open an email with the subject filled in. No email
+sending needs to be configured while the form is off.
+
+### Turning the contact form on
+
+1. Set up email sending (below) and add the SMTP variables on the host.
+2. In `server/content/settings.json` set `"contactFormEnabled": true`, and set
+   `legal.formDeliveryProvider` to the sending service (e.g. `"Resend"`) so the privacy notice
+   names it. The privacy notice and Contact page switch to the form wording automatically.
+3. Push. With the form on, the production server refuses to start without the SMTP settings, so
+   form messages are never silently lost.
+
+### Email sending for the form
+
+Form messages are sent by SMTP to `CONTACT_NOTIFY_TO` (`rlp@aaroh.co.uk`).
 
 **Use [Resend](https://resend.com), not Microsoft 365, to send them.** Your mailbox is on
 Microsoft 365, but Microsoft has switched off SMTP sending with a password for tenants that were
@@ -189,8 +206,7 @@ Your inbox stays on Microsoft 365; Resend only delivers the form messages to it.
    (_My Products › aaroh.co.uk › DNS › Add New Record_). They sit on their own names, so they do
    not affect your Microsoft 365 email. Wait for Resend to show the domain as verified.
 3. Create an **API key** with sending access.
-4. Set these environment variables on the host (the Render Blueprint already fills in all but
-   the key):
+4. Set these environment variables on the host (Render: _Environment_ for the `aaroh` service):
 
    ```
    SMTP_HOST=smtp.resend.com
@@ -216,18 +232,16 @@ start commands, health check, environment variables and the custom domains.
 
 1. In [Render](https://render.com): **New › Blueprint**, connect GitHub and choose
    `yupsang1719/aaroh`.
-2. Render reads `render.yaml` and asks for the one secret, **`SMTP_PASS`**: paste the Resend API
-   key.
-3. Choose an **instance type** for the `aaroh` service. Use a paid instance (Starter or above)
+2. Choose an **instance type** for the `aaroh` service. Use a paid instance (Starter or above)
    for the live site: free instances go to sleep and take up to a minute to wake for the next
    visitor.
-4. Create. Render builds (`npm ci --include=dev && npm run build`) and starts (`npm start`).
+3. Create. Render builds (`npm ci --include=dev && npm run build`) and starts (`npm start`).
    The service is healthy when `https://<service>.onrender.com/api/health` returns `{"status":"ok",…}`.
-5. Deploys then happen automatically after each push to `main` **once the GitHub checks pass**
+4. Deploys then happen automatically after each push to `main` **once the GitHub checks pass**
    (`.github/workflows/ci.yml`: format, lint, types, tests, content check, build).
 
-The server refuses to start, with a clear message in the Render logs, if SMTP is not set or the
-content still has PLACEHOLDER values.
+The server refuses to start, with a clear message in the Render logs, if the content still has
+PLACEHOLDER values, or if the contact form is switched on without SMTP settings.
 
 **Railway or another Node host** works the same way: build `npm ci --include=dev && npm run build`,
 start `npm start`, health check `/api/health`, and the environment variables from `render.yaml`
@@ -262,7 +276,8 @@ https://www.aaroh.co.uk (expect a redirect to https://aaroh.co.uk).
 
 - [ ] Set `legal.hostingProvider` in `server/content/settings.json` to `Render Services, Inc.`
       (named in the privacy notice), then push.
-- [ ] Send a message through the contact form on the live site and check it arrives.
+- [ ] On the live Contact page, check **Email us** opens a new email to `rlp@aaroh.co.uk` and
+      send yourself a test from another address.
 - [ ] Check a link preview: paste https://aaroh.co.uk into a WhatsApp or iMessage chat, or use
       the [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/).
 - [ ] Add the site to [Google Search Console](https://search.google.com/search-console)
@@ -287,7 +302,7 @@ Server (`server/.env` locally, the host's settings in production). See `server/.
 | `TRUST_PROXY`                                       | `0`                                   | `1` behind Render/Railway, so the contact form's rate limit sees real visitor IPs. |
 | `CLIENT_ORIGIN`                                     | `http://localhost:5173`               | Browser origins allowed by CORS (comma-separated). Only matters in development.    |
 | `CLIENT_DIST_DIR`                                   | `client/dist`                         | Built website location in production. Rarely needs setting.                        |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`  | `587` for the port                    | Contact form email. Required in production.                                        |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`  | `587` for the port                    | Contact form email. Required in production only while the contact form is on.      |
 | `SMTP_FROM`                                         | `Aaroh website <website@aaroh.co.uk>` | Sender. Must be allowed by the SMTP service.                                       |
 | `CONTACT_NOTIFY_TO`                                 | `rlp@aaroh.co.uk`                     | Inbox for contact form messages.                                                   |
 | `CONTACT_RATE_LIMIT`, `CONTACT_RATE_WINDOW_MINUTES` | `5`, `15`                             | Messages allowed per IP address per window.                                        |
@@ -343,8 +358,9 @@ hosted by the CMS, return responsive image URLs from `imageSrcSet()` in
   and run `npm run dev` from the repository root.
 - **Production: `Refusing to start: content … still has PLACEHOLDER values`:** replace the listed
   values (`npm run check:content` shows them) and push.
-- **Production: `Invalid environment variables … SMTP_HOST`:** set the SMTP variables on the host
-  (see [Contact form email](#contact-form-email)).
+- **Production: `Refusing to start: the contact form is enabled … SMTP_HOST … not set`:** set the
+  SMTP variables on the host (see [Contact page and email](#contact-page-and-email)) or set
+  `contactFormEnabled` back to `false`.
 - **Contact form says "Your message could not be sent":** the email service rejected the message.
   The Render logs show the reason; run `npm run email:test` in the Render Shell. Usually the
   API key is wrong or the domain is not yet verified in Resend.

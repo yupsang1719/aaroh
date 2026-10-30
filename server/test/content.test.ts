@@ -133,7 +133,8 @@ describe('placeholder check', () => {
     const live = new JsonContentProvider(new URL('../content', import.meta.url).pathname, {
       cache: false,
     });
-    await expect(live.getSettings()).resolves.toBeTruthy();
+    // Launching email-only: the contact form stays off until email sending is set up.
+    await expect(live.getSettings()).resolves.toMatchObject({ contactFormEnabled: false });
     await expect(live.listReleases()).resolves.toEqual([]);
   });
 });

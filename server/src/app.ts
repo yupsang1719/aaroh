@@ -59,6 +59,7 @@ export function createApp({ env, content, mailer, mediaDir, clientDir }: AppDeps
   app.use(
     '/api/contact',
     contactRouter({
+      content,
       mailer,
       rateLimit: {
         windowMs: env.CONTACT_RATE_WINDOW_MINUTES * 60_000,

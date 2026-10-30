@@ -109,7 +109,10 @@ export const legalSchema = z.object({
   privacyUpdated: z.iso.date(),
   /** Named service providers, shown in the privacy notice (optional but recommended). */
   hostingProvider: blankable(z.string().trim()),
+  /** Who hosts the mailbox that receives email, e.g. "Microsoft 365". */
   emailProvider: blankable(z.string().trim()),
+  /** Service that delivers contact form messages (only mentioned while the form is on). */
+  formDeliveryProvider: blankable(z.string().trim()),
 });
 
 export const siteSettingsSchema = z.object({
@@ -137,6 +140,11 @@ export const siteSettingsSchema = z.object({
       spotify: blankable(httpUrl),
     })
     .default({}),
+  /**
+   * Show the contact form. When false, the Contact page offers email only, the server rejects
+   * form submissions and SMTP settings are not needed.
+   */
+  contactFormEnabled: z.boolean().default(false),
   /** Shown on the Work page while there are no releases. */
   workEmptyNote: z.string().trim().default('Our first release is on its way.'),
   legal: legalSchema,

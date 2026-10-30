@@ -104,6 +104,8 @@
     "icoRegistrationNumber": "",
     "privacyUpdated": "2026-10-30",
     "hostingProvider": "PLACEHOLDER Hosting Ltd",
-    "emailProvider": "PLACEHOLDER Mail Ltd"
-  }
+    "emailProvider": "PLACEHOLDER Mail Ltd",
+    "formDeliveryProvider": "PLACEHOLDER Mail Sending Ltd"
+  },
+  "contactFormEnabled": true
 }

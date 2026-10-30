@@ -43,6 +43,8 @@
     }
   ],
   "contactEmail": "rlp@aaroh.co.uk",
+  "_contactFormComment": "The contact form is off: the Contact page offers email only. To turn it on, set contactFormEnabled to true and set up email sending first (README \"Contact form email\"), otherwise production refuses to start.",
+  "contactFormEnabled": false,
   "_socialsComment": "Add full profile URLs (https://…) for instagram, youtube, tiktok, spotify. Empty ones are not shown.",
   "socials": {},
   "workEmptyNote": "Our first release is on its way.",
@@ -56,7 +58,8 @@
     "icoRegistrationNumber": "",
     "privacyUpdated": "2026-10-30",
     "hostingProvider": "",
-    "emailProvider": "Resend (to send it) and Microsoft 365 (our inbox)",
-    "_hostingComment": "Fill in hostingProvider (e.g. \"Render Services, Inc.\") once the website host is chosen. While empty, the privacy notice refers to \"our hosting provider\" without naming it."
+    "emailProvider": "Microsoft 365 (Microsoft Corporation)",
+    "_hostingComment": "Fill in hostingProvider (e.g. \"Render Services, Inc.\") once the website host is chosen. While empty, the privacy notice refers to \"our hosting provider\" without naming it.",
+    "formDeliveryProvider": ""
   }
 }

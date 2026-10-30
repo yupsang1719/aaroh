@@ -34,7 +34,7 @@ export default function LegalPage() {
               <h2>Contact</h2>
               <p>
                 Email <a href={`mailto:${s.contactEmail}`}>{s.contactEmail}</a> or use our{' '}
-                <Link to="/contact">contact form</Link>.
+                <Link to="/contact">{s.contactFormEnabled ? 'contact form' : 'contact page'}</Link>.
               </p>
 
               <h2>Copyright</h2>

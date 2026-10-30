@@ -1,15 +1,17 @@
 import { Router } from 'express';
 import { rateLimit } from 'express-rate-limit';
 import { contactInputSchema } from '@aaroh/shared';
+import type { ContentProvider } from '../content';
 import type { Mailer } from '../services/mailer';
 import { HttpError } from '../middleware/errors';
 
 export interface ContactRouterDeps {
+  content: ContentProvider;
   mailer: Mailer;
   rateLimit: { windowMs: number; limit: number };
 }
 
-export function contactRouter({ mailer, rateLimit: rl }: ContactRouterDeps) {
+export function contactRouter({ content, mailer, rateLimit: rl }: ContactRouterDeps) {
   const router = Router();
 
   // Per-IP limit, held in memory only (nothing about visitors is stored).
@@ -22,6 +24,12 @@ export function contactRouter({ mailer, rateLimit: rl }: ContactRouterDeps) {
   });
 
   router.post('/', limiter, async (req, res) => {
+    // The form can be switched off in settings.json (contactFormEnabled); email only then.
+    const settings = await content.getSettings();
+    if (!settings?.contactFormEnabled) {
+      throw new HttpError(404, 'The contact form is not available. Please email us instead.');
+    }
+
     const input = contactInputSchema.parse(req.body);
 
     // Honeypot filled in: almost certainly a bot. Pretend it worked and drop the message.

@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
 import request from 'supertest';
 import type { Mailer } from '../src/services/mailer';
-import { loadEnv } from '../src/config/env';
-import { makeApp } from './helpers';
+import { loadEnv, missingContactFormSettings } from '../src/config/env';
+import { makeApp, makeContentDir, sampleSettings } from './helpers';
 
 const valid = {
   name: 'Test Person',
@@ -75,18 +75,36 @@ describe('POST /api/contact', () => {
   });
 });
 
+describe('contact form switched off (settings.json › contactFormEnabled: false)', () => {
+  it('rejects submissions with 404 and sends nothing', async () => {
+    const mailer = mockMailer();
+    const contentDir = makeContentDir({ ...sampleSettings, contactFormEnabled: false });
+    const res = await request(makeApp({ mailer, contentDir })).post('/api/contact').send(valid);
+    expect(res.status).toBe(404);
+    expect(res.body.error).toMatch(/email us/i);
+    expect(mailer.sendContact).not.toHaveBeenCalled();
+  });
+});
+
 describe('production configuration', () => {
-  it('requires SMTP settings in production so messages are never lost', () => {
-    const error = vi.spyOn(console, 'error').mockImplementation(() => {});
-    expect(() => loadEnv({ NODE_ENV: 'production' })).toThrow();
-    expect(
-      loadEnv({
-        NODE_ENV: 'production',
-        SMTP_HOST: 'smtp.example.com',
-        SMTP_USER: 'u',
-        SMTP_PASS: 'p',
-      }).SMTP_HOST,
-    ).toBe('smtp.example.com');
-    error.mockRestore();
+  const smtp = { SMTP_HOST: 'smtp.example.com', SMTP_USER: 'u', SMTP_PASS: 'p' };
+
+  it('needs no SMTP settings while the contact form is off', () => {
+    expect(missingContactFormSettings(loadEnv({ NODE_ENV: 'production' }), false)).toEqual([]);
+  });
+
+  it('requires SMTP settings in production once the form is on', () => {
+    expect(missingContactFormSettings(loadEnv({ NODE_ENV: 'production' }), true)).toEqual([
+      'SMTP_HOST',
+      'SMTP_USER',
+      'SMTP_PASS',
+    ]);
+    expect(missingContactFormSettings(loadEnv({ NODE_ENV: 'production', ...smtp }), true)).toEqual(
+      [],
+    );
+  });
+
+  it('does not require SMTP in development (messages are printed instead)', () => {
+    expect(missingContactFormSettings(loadEnv({ NODE_ENV: 'development' }), true)).toEqual([]);
   });
 });

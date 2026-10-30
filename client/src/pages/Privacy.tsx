@@ -14,6 +14,7 @@ import { useSettings } from '../lib/useApi';
 export default function PrivacyPage() {
   const settings = useSettings();
   const s = settings.data;
+  const form = s?.contactFormEnabled ?? false;
 
   return (
     <>
@@ -30,8 +31,8 @@ export default function PrivacyPage() {
             <p>
               This notice explains what personal information {s.legal.companyName} collects through
               this website, why, and the rights you have. In short: we do not use analytics,
-              advertising or tracking cookies, and the only personal information we ask for is what
-              you choose to send us through the contact form.
+              advertising or tracking cookies, and the only personal information we receive is what
+              you choose to send us{form ? ' through the contact form or by email' : ' by email'}.
             </p>
 
             <h2>Who we are</h2>
@@ -45,9 +46,18 @@ export default function PrivacyPage() {
 
             <h2>When you contact us</h2>
             <p>
-              If you use our <Link to="/contact">contact form</Link> or email us, we receive your
-              name, email address, the subject you choose, your message and anything else you
-              include.
+              {form ? (
+                <>
+                  If you use our <Link to="/contact">contact form</Link> or email us, we receive
+                  your name, email address, the subject you choose, your message and anything else
+                  you include.
+                </>
+              ) : (
+                <>
+                  If you <Link to="/contact">email us</Link>, we receive your name, email address,
+                  your message and anything else you include.
+                </>
+              )}
             </p>
             <ul>
               <li>
@@ -60,9 +70,22 @@ export default function PrivacyPage() {
                 you.
               </li>
               <li>
-                <strong>How:</strong> the form sends your message to our inbox by email
-                {s.legal.emailProvider ? <>, using {s.legal.emailProvider}</> : null}. This website
-                does not store it in a database.
+                <strong>How:</strong>{' '}
+                {form ? (
+                  <>
+                    the form sends your message to our inbox by email
+                    {s.legal.formDeliveryProvider ? (
+                      <>, using {s.legal.formDeliveryProvider}</>
+                    ) : null}
+                    . This website does not store it in a database.
+                  </>
+                ) : (
+                  <>
+                    your email arrives in our inbox
+                    {s.legal.emailProvider ? <>, provided by {s.legal.emailProvider}</> : null}.
+                    This website does not collect or store it.
+                  </>
+                )}
               </li>
               <li>
                 <strong>How long:</strong> we keep correspondence for as long as we need it to deal
@@ -78,10 +101,16 @@ export default function PrivacyPage() {
               hosting provider
               {s.legal.hostingProvider ? <>, {s.legal.hostingProvider},</> : null} processes this on
               our behalf and may keep it in short-lived server logs for security and to fix
-              problems. To stop the contact form being abused, our server also keeps a count of
-              recent messages per IP address in memory for up to 15 minutes; it is never written to
-              disk. Our lawful basis is our legitimate interest in running a secure, working
-              website.
+              problems.
+              {form && (
+                <>
+                  {' '}
+                  To stop the contact form being abused, our server also keeps a count of recent
+                  messages per IP address in memory for up to 15 minutes; it is never written to
+                  disk.
+                </>
+              )}{' '}
+              Our lawful basis is our legitimate interest in running a secure, working website.
             </p>
             <p>We do not use analytics, advertising or any other tracking.</p>
 

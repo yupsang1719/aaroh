@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadEnv } from './config/env';
+import { loadEnv, missingContactFormSettings } from './config/env';
 import { createApp } from './app';
 import { createContentProvider } from './content';
 import { findPlaceholders } from './content/placeholders';
@@ -37,7 +37,21 @@ if (placeholders.length > 0) {
 
 const content = createContentProvider(env, contentDir);
 // Fail at startup, not on the first visitor, if the content files are invalid.
-await Promise.all([content.getSettings(), content.listReleases()]);
+const [settings] = await Promise.all([content.getSettings(), content.listReleases()]);
+
+// With the contact form on, messages must be deliverable by email.
+const missing = missingContactFormSettings(env, settings?.contactFormEnabled ?? false);
+if (missing.length > 0) {
+  console.error(
+    `Refusing to start: the contact form is enabled (settings.json › contactFormEnabled) but ` +
+      `${missing.join(', ')} ${missing.length > 1 ? 'are' : 'is'} not set. Set up email ` +
+      '(see README "Contact form email") or turn the form off.',
+  );
+  process.exit(1);
+}
+console.log(
+  `[contact] Contact form ${settings?.contactFormEnabled ? 'enabled' : 'off (email only)'}.`,
+);
 
 const app = createApp({
   env,

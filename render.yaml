@@ -19,16 +19,6 @@ services:
         value: https://aaroh.co.uk
       - key: TRUST_PROXY
         value: '1'
-      # Contact form email (Resend SMTP; see README "Contact form email").
-      - key: SMTP_HOST
-        value: smtp.resend.com
-      - key: SMTP_PORT
-        value: '587'
-      - key: SMTP_USER
-        value: resend
-      - key: SMTP_PASS
-        sync: false # the Resend API key: entered in the dashboard, never committed
-      - key: SMTP_FROM
-        value: Aaroh website <website@aaroh.co.uk>
-      - key: CONTACT_NOTIFY_TO
-        value: rlp@aaroh.co.uk
+      # The contact form is off (settings.json › contactFormEnabled), so no email sending is
+      # configured. When turning it on, add SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS,
+      # SMTP_FROM and CONTACT_NOTIFY_TO here or in the dashboard (README "Contact form email").
