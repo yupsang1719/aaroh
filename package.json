@@ -12,7 +12,7 @@
     "client"
   ],
   "scripts": {
-    "dev": "concurrently -n server,client -c blue,magenta \"npm:dev -w server\" \"npm:dev -w client\"",
+    "dev": "concurrently -n db,server,client -c gray,blue,magenta \"npm:dev:db -w server\" \"npm:dev -w server\" \"npm:dev -w client\"",
     "build": "npm run build -w client && npm run build -w server",
     "start": "npm run start -w server",
     "seed": "npm run seed -w server",

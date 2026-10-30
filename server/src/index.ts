@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url';
 import mongoose from 'mongoose';
 import { loadEnv } from './config/env';
+import { connectDatabase } from './db';
 import { createApp } from './app';
 import { createContentProvider } from './content';
 import { mongoContactStore } from './services/contactStore';
@@ -9,7 +10,7 @@ import { createMailer } from './services/mailer';
 const env = loadEnv();
 
 // MongoDB is always needed: it stores contact messages even when content comes from a CMS.
-await mongoose.connect(env.MONGODB_URI);
+await connectDatabase(env.MONGODB_URI, { retry: env.NODE_ENV !== 'production' });
 
 const app = createApp({
   env,
