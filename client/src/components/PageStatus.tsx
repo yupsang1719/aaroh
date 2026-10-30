@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { ApiError } from '../lib/api';
+import { NOT_FOUND_META } from '@aaroh/shared/seo';
 import { Seo } from './Seo';
 
 /** Loading spacer: keeps the footer from jumping up while content loads. */
@@ -15,7 +16,9 @@ export function PageError({ error }: { error: Error }) {
   const notFound = error instanceof ApiError && error.status === 404;
   return (
     <div className="wrap py-24 md:py-40">
-      <Seo title={notFound ? 'Not found' : 'Something went wrong'} noindex />
+      <Seo
+        meta={notFound ? NOT_FOUND_META : { ...NOT_FOUND_META, title: 'Something went wrong' }}
+      />
       <h1 className="font-display text-display-lg font-semibold">
         {notFound ? 'Page not found' : 'Something went wrong'}
       </h1>

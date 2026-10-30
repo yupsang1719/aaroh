@@ -1,7 +1,0 @@
-<!-- PLACEHOLDER image: replace with real photography -->
-<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2B2A28"/><stop offset="1" stop-color="#4A4743"/></linearGradient></defs>
-  <rect width="1920" height="1080" fill="url(#g)"/>
-  <circle cx="1382.3999999999999" cy="410.4" r="237.6" fill="#F6F4EF" fill-opacity="0.07"/>
-  <text x="96" y="984" font-family="system-ui, sans-serif" font-size="54" letter-spacing="2" fill="#F6F4EF" fill-opacity="0.7">PLACEHOLDER · HERO POSTER</text>
-</svg>

@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router';
 import type { ReleaseDetail, ReleaseLink } from '@aaroh/shared';
+import { releaseJsonLd, releaseMeta } from '@aaroh/shared/seo';
 import { Seo } from '../components/Seo';
 import { PageError, PageLoading } from '../components/PageStatus';
 import { LiteYouTube } from '../components/LiteYouTube';
@@ -8,6 +9,7 @@ import { Credits } from '../components/Credits';
 import { Gallery } from '../components/Gallery';
 import { Reveal } from '../components/Reveal';
 import { formatDate, paragraphs } from '../lib/format';
+import { SITE_URL } from '../lib/site';
 import { useRelease } from '../lib/useApi';
 
 export default function WorkDetailPage() {
@@ -28,13 +30,7 @@ function Release({ release }: { release: ReleaseDetail }) {
 
   return (
     <article>
-      <Seo
-        title={`${release.title} — ${release.artist}`}
-        description={release.summary}
-        image={release.coverImage.url}
-        imageAlt={release.coverImage.alt}
-        type="video.other"
-      />
+      <Seo meta={releaseMeta(release)} jsonLd={releaseJsonLd(SITE_URL, release)} />
 
       <header className="wrap pb-10 pt-10 md:pb-16 md:pt-20">
         <p className="eyebrow">

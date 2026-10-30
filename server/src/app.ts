@@ -11,18 +11,25 @@ import { settingsRouter } from './routes/settings';
 import { releasesRouter } from './routes/releases';
 import { contactRouter } from './routes/contact';
 import { apiNotFound, errorHandler } from './middleware/errors';
+import { redirectWww } from './middleware/redirectWww';
+import { seoFilesRouter } from './seo/sitemap';
+import { serveClient } from './seo/serveClient';
 
 export interface AppDeps {
   env: Env;
   content: ContentProvider;
   contactStore: ContactStore;
   mailer: Mailer;
+  /** Built client (client/dist). When set, the app serves the site itself (production). */
+  clientDir?: string;
 }
 
-export function createApp({ env, content, contactStore, mailer }: AppDeps) {
+export function createApp({ env, content, contactStore, mailer, clientDir }: AppDeps) {
   const app = express();
   app.disable('x-powered-by');
   app.set('trust proxy', env.TRUST_PROXY);
+
+  app.use(redirectWww(env.SITE_URL));
 
   app.use(
     helmet({
@@ -32,6 +39,8 @@ export function createApp({ env, content, contactStore, mailer }: AppDeps) {
           'media-src': ["'self'", 'https:'],
           'frame-src': ['https://www.youtube-nocookie.com'],
           'style-src': ["'self'", "'unsafe-inline'"],
+          // HTTPS is enforced by the host and HSTS; this directive would break local http testing.
+          'upgrade-insecure-requests': null,
         },
       },
     }),
@@ -60,6 +69,9 @@ export function createApp({ env, content, contactStore, mailer }: AppDeps) {
     }),
   );
   app.use('/api', apiNotFound);
+
+  app.use(seoFilesRouter(content, env.SITE_URL));
+  if (clientDir) app.use(serveClient(clientDir, content, env.SITE_URL));
 
   app.use(errorHandler);
   return app;

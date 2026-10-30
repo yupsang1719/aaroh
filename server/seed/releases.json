@@ -15,26 +15,26 @@
       "other": [{ "label": "Bandcamp", "url": "https://bandcamp.com/PLACEHOLDER" }]
     },
     "coverImage": {
-      "url": "/placeholder/first-light-cover.svg",
+      "url": "/placeholder/first-light-cover.jpg",
       "alt": "PLACEHOLDER: Still from the First Light video"
     },
     "stills": [
       {
-        "url": "/placeholder/first-light-still-1.svg",
+        "url": "/placeholder/first-light-still-1.jpg",
         "alt": "PLACEHOLDER: Wide shot from the First Light video",
         "caption": "PLACEHOLDER: The opening shot, 5.40am."
       },
       {
-        "url": "/placeholder/first-light-still-2.svg",
+        "url": "/placeholder/first-light-still-2.jpg",
         "alt": "PLACEHOLDER: Behind the scenes, setting up the camera",
         "caption": "PLACEHOLDER: Setting up before sunrise."
       },
       {
-        "url": "/placeholder/first-light-still-3.svg",
+        "url": "/placeholder/first-light-still-3.jpg",
         "alt": "PLACEHOLDER: Close-up from the First Light video"
       },
       {
-        "url": "/placeholder/first-light-still-4.svg",
+        "url": "/placeholder/first-light-still-4.jpg",
         "alt": "PLACEHOLDER: Behind the scenes, the crew watching playback",
         "caption": "PLACEHOLDER: Watching the take back."
       }
@@ -64,21 +64,21 @@
       "appleMusic": "https://music.apple.com/PLACEHOLDER"
     },
     "coverImage": {
-      "url": "/placeholder/low-tide-cover.svg",
+      "url": "/placeholder/low-tide-cover.jpg",
       "alt": "PLACEHOLDER: Still from the Low Tide video"
     },
     "stills": [
       {
-        "url": "/placeholder/low-tide-still-1.svg",
+        "url": "/placeholder/low-tide-still-1.jpg",
         "alt": "PLACEHOLDER: The coastline from the Low Tide video",
         "caption": "PLACEHOLDER: Day one, low tide."
       },
       {
-        "url": "/placeholder/low-tide-still-2.svg",
+        "url": "/placeholder/low-tide-still-2.jpg",
         "alt": "PLACEHOLDER: Behind the scenes on the beach"
       },
       {
-        "url": "/placeholder/low-tide-still-3.svg",
+        "url": "/placeholder/low-tide-still-3.jpg",
         "alt": "PLACEHOLDER: Night shot from the Low Tide video"
       }
     ],

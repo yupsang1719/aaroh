@@ -24,6 +24,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    // The server reads .vite/manifest.json to preload each page's code (server/src/seo).
+    manifest: true,
   },
   test: {
     include: ['src/**/*.test.ts'],

@@ -1,11 +1,6 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { z } from 'zod';
-import {
-  CONTACT_TYPES,
-  CONTACT_TYPE_LABELS,
-  contactInputSchema,
-  type ContactInput,
-} from '@aaroh/shared';
+import type { ContactInput } from '@aaroh/shared/contact';
+import { CONTACT_TYPES, CONTACT_TYPE_LABELS } from '@aaroh/shared/contact-types';
 import { ApiError, api } from '../lib/api';
 import { cn } from '../lib/cn';
 
@@ -16,19 +11,14 @@ type Status = 'idle' | 'sending' | 'sent' | 'error';
 const FIELDS: Field[] = ['name', 'email', 'type', 'message'];
 const EMPTY: ContactInput = { name: '', email: '', type: 'general', message: '', website: '' };
 
-function firstErrors(fieldErrors: Record<string, string[] | undefined>): Errors {
-  const errors: Errors = {};
-  for (const field of FIELDS) {
-    const message = fieldErrors[field]?.[0];
-    if (message) errors[field] = message;
-  }
-  return errors;
-}
-
-function validate(values: ContactInput): Errors {
-  const result = contactInputSchema.safeParse(values);
-  return result.success ? {} : firstErrors(z.flattenError(result.error).fieldErrors);
-}
+// Validation (zod) is loaded on first interaction rather than with the page. If the download
+// fails, the form still submits and the server validates; the next attempt retries the download.
+let validation: Promise<typeof import('../lib/contactValidation')> | undefined;
+const loadValidation = () =>
+  (validation ??= import('../lib/contactValidation').catch((err) => {
+    validation = undefined;
+    throw err;
+  }));
 
 const inputClass =
   'mt-2 block w-full rounded-none border-0 border-b border-fg/30 bg-transparent px-0 py-3 text-lg ' +
@@ -49,7 +39,11 @@ export function ContactForm() {
     setValues(next);
     // Once a field has shown an error, re-check it as the visitor fixes it.
     if (field in errors) {
-      setErrors((prev) => ({ ...prev, [field]: validate(next)[field as Field] }));
+      loadValidation().then(
+        ({ validateContact }) =>
+          setErrors((prev) => ({ ...prev, [field]: validateContact(next)[field as Field] })),
+        () => {},
+      );
     }
   };
 
@@ -62,7 +56,10 @@ export function ContactForm() {
     e.preventDefault();
     if (status === 'sending') return;
 
-    const errs = validate(values);
+    const errs: Errors = await loadValidation().then(
+      ({ validateContact }) => validateContact(values),
+      () => ({}),
+    );
     setErrors(errs);
     if (Object.keys(errs).length > 0) {
       focusFirstError(errs);
@@ -79,7 +76,10 @@ export function ContactForm() {
     } catch (err) {
       setStatus('error');
       if (err instanceof ApiError && err.fieldErrors) {
-        const serverErrors = firstErrors(err.fieldErrors);
+        const serverErrors = await loadValidation().then(
+          ({ firstErrors }) => firstErrors(err.fieldErrors!),
+          () => ({}),
+        );
         setErrors(serverErrors);
         focusFirstError(serverErrors);
       }
@@ -122,7 +122,13 @@ export function ContactForm() {
     );
 
   return (
-    <form ref={formRef} onSubmit={onSubmit} noValidate className="space-y-10">
+    <form
+      ref={formRef}
+      onSubmit={onSubmit}
+      onFocus={() => void loadValidation().catch(() => {})}
+      noValidate
+      className="space-y-10"
+    >
       <div className="grid gap-10 sm:grid-cols-2 sm:gap-8">
         <div>
           <label htmlFor="contact-name" className="eyebrow">

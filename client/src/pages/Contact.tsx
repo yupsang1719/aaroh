@@ -1,3 +1,4 @@
+import { staticPageMeta } from '@aaroh/shared/seo';
 import { Seo } from '../components/Seo';
 import { PageHeader } from '../components/PageHeader';
 import { ContactForm } from '../components/ContactForm';
@@ -9,10 +10,7 @@ export default function ContactPage() {
 
   return (
     <>
-      <Seo
-        title="Contact"
-        description="Get in touch with Aaroh about collaborations, press, licensing or anything else."
-      />
+      <Seo meta={staticPageMeta('contact')} />
       <PageHeader
         title="Contact"
         intro="For collaborations, press, licensing or anything else, send us a message."

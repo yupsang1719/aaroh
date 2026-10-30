@@ -1,3 +1,4 @@
+import { staticPageMeta } from '@aaroh/shared/seo';
 import { Seo } from '../components/Seo';
 import { Hero, HeroPlaceholder } from '../components/Hero';
 import { FeaturedRelease } from '../components/FeaturedRelease';
@@ -11,7 +12,7 @@ export default function HomePage() {
 
   return (
     <>
-      <Seo description={settings.data?.tagline} />
+      <Seo meta={staticPageMeta('home', settings.data)} />
 
       {settings.data ? <Hero hero={settings.data.hero} /> : <HeroPlaceholder />}
 

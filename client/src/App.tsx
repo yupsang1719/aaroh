@@ -13,6 +13,8 @@ const page =
 const router = createBrowserRouter([
   {
     element: <Layout />,
+    // Shown for the moment before the first page's code has loaded.
+    HydrateFallback: () => <div className="min-h-screen" />,
     children: [
       {
         errorElement: <RouteError />,

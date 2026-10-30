@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url';
 import mongoose from 'mongoose';
 import { loadEnv } from './config/env';
 import { createApp } from './app';
@@ -15,6 +16,11 @@ const app = createApp({
   content: createContentProvider(env),
   contactStore: mongoContactStore,
   mailer: createMailer(env),
+  // In production this server also serves the built site. In development Vite does.
+  clientDir:
+    env.NODE_ENV === 'production'
+      ? (env.CLIENT_DIST_DIR ?? fileURLToPath(new URL('../../client/dist', import.meta.url)))
+      : undefined,
 });
 
 const server = app.listen(env.PORT, () => {

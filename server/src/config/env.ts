@@ -13,6 +13,8 @@ const envSchema = z.object({
   CLIENT_ORIGIN: z.string().default('http://localhost:5173'),
   // Number of proxies in front of the app (Render/Railway: 1), so req.ip is the real client IP.
   TRUST_PROXY: z.coerce.number().int().min(0).default(0),
+  // Built client location; defaults to ../client/dist next to the server.
+  CLIENT_DIST_DIR: z.string().optional(),
   CONTACT_RATE_LIMIT: z.coerce.number().int().positive().default(5),
   CONTACT_RATE_WINDOW_MINUTES: z.coerce.number().int().positive().default(15),
   IP_HASH_SALT: z.string().default('change-me'),

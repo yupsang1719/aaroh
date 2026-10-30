@@ -5,26 +5,26 @@
   "hero": {
     "mode": "collage",
     "videoUrl": "",
-    "posterUrl": "/placeholder/hero-poster.svg",
+    "posterUrl": "/placeholder/hero-poster.jpg",
     "collageImages": [
       {
-        "url": "/placeholder/first-light-still-1.svg",
+        "url": "/placeholder/first-light-still-1.jpg",
         "alt": "PLACEHOLDER: Still from First Light"
       },
       {
-        "url": "/placeholder/low-tide-still-2.svg",
+        "url": "/placeholder/low-tide-still-2.jpg",
         "alt": "PLACEHOLDER: Behind the scenes on Low Tide"
       },
       {
-        "url": "/placeholder/first-light-still-2.svg",
+        "url": "/placeholder/first-light-still-2.jpg",
         "alt": "PLACEHOLDER: Behind the scenes on First Light"
       },
-      { "url": "/placeholder/low-tide-still-1.svg", "alt": "PLACEHOLDER: Still from Low Tide" },
+      { "url": "/placeholder/low-tide-still-1.jpg", "alt": "PLACEHOLDER: Still from Low Tide" },
       {
-        "url": "/placeholder/first-light-still-3.svg",
+        "url": "/placeholder/first-light-still-3.jpg",
         "alt": "PLACEHOLDER: Close-up from First Light"
       },
-      { "url": "/placeholder/low-tide-still-3.svg", "alt": "PLACEHOLDER: Night shot from Low Tide" }
+      { "url": "/placeholder/low-tide-still-3.jpg", "alt": "PLACEHOLDER: Night shot from Low Tide" }
     ]
   },
   "about": {
@@ -36,10 +36,10 @@
     {
       "name": "PLACEHOLDER Name",
       "role": "Founder, Producer",
-      "photoUrl": "/placeholder/team-1.svg"
+      "photoUrl": "/placeholder/team-1.jpg"
     },
-    { "name": "PLACEHOLDER Name", "role": "Director", "photoUrl": "/placeholder/team-2.svg" },
-    { "name": "PLACEHOLDER Name", "role": "Editor", "photoUrl": "/placeholder/team-3.svg" }
+    { "name": "PLACEHOLDER Name", "role": "Director", "photoUrl": "/placeholder/team-2.jpg" },
+    { "name": "PLACEHOLDER Name", "role": "Editor", "photoUrl": "/placeholder/team-3.jpg" }
   ],
   "processSteps": [
     {
@@ -53,19 +53,19 @@
     {
       "title": "Studio",
       "text": "PLACEHOLDER: Recording, arranging and mixing the final track.",
-      "imageUrl": "/placeholder/process-studio.svg",
+      "imageUrl": "/placeholder/process-studio.jpg",
       "imageAlt": "PLACEHOLDER: The studio during a session"
     },
     {
       "title": "Shoot",
       "text": "PLACEHOLDER: A small crew, a clear idea and usually not much time.",
-      "imageUrl": "/placeholder/process-shoot.svg",
+      "imageUrl": "/placeholder/process-shoot.jpg",
       "imageAlt": "PLACEHOLDER: Crew on a video shoot"
     },
     {
       "title": "Edit",
       "text": "PLACEHOLDER: Cutting the film to the song, then grading and finishing.",
-      "imageUrl": "/placeholder/process-edit.svg",
+      "imageUrl": "/placeholder/process-edit.jpg",
       "imageAlt": "PLACEHOLDER: Editing suite"
     },
     {

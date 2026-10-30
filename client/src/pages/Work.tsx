@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { staticPageMeta } from '@aaroh/shared/seo';
 import { Seo } from '../components/Seo';
 import { PageHeader } from '../components/PageHeader';
 import { PageError, PageLoading } from '../components/PageStatus';
@@ -12,10 +13,7 @@ export default function WorkPage() {
 
   return (
     <>
-      <Seo
-        title="Work"
-        description="Every Aaroh release: an original song and the music video made for it."
-      />
+      <Seo meta={staticPageMeta('work')} />
       <PageHeader title="Work" intro="Each release is an original song and the film made for it." />
 
       {releases.status === 'loading' && <PageLoading />}

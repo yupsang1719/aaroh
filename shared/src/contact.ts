@@ -1,13 +1,7 @@
 import { z } from 'zod';
+import { CONTACT_TYPES } from './contactTypes';
 
-export const CONTACT_TYPES = ['general', 'collaboration', 'press', 'licensing'] as const;
-
-export const CONTACT_TYPE_LABELS: Record<(typeof CONTACT_TYPES)[number], string> = {
-  general: 'General enquiry',
-  collaboration: 'Collaboration',
-  press: 'Press',
-  licensing: 'Licensing',
-};
+export { CONTACT_TYPES, CONTACT_TYPE_LABELS, type ContactType } from './contactTypes';
 
 export const contactInputSchema = z.object({
   name: z.string().trim().min(1, 'Please enter your name').max(120),
@@ -20,4 +14,3 @@ export const contactInputSchema = z.object({
 });
 
 export type ContactInput = z.infer<typeof contactInputSchema>;
-export type ContactType = (typeof CONTACT_TYPES)[number];

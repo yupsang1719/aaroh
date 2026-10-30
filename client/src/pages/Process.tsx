@@ -1,3 +1,4 @@
+import { staticPageMeta } from '@aaroh/shared/seo';
 import { Seo } from '../components/Seo';
 import { PageHeader } from '../components/PageHeader';
 import { PageError, PageLoading } from '../components/PageStatus';
@@ -14,10 +15,7 @@ export default function ProcessPage() {
 
   return (
     <>
-      <Seo
-        title="Process"
-        description="How an Aaroh release comes together: idea, demo, studio, shoot, edit, release."
-      />
+      <Seo meta={staticPageMeta('process')} />
       <PageHeader
         title="Process"
         intro="How a release comes together, from the first idea to the day it comes out."

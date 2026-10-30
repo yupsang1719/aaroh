@@ -1,3 +1,4 @@
+import { staticPageMeta } from '@aaroh/shared/seo';
 import { Seo } from '../components/Seo';
 import { PageHeader } from '../components/PageHeader';
 import { PageError, PageLoading } from '../components/PageStatus';
@@ -13,7 +14,7 @@ export default function AboutPage() {
 
   return (
     <>
-      <Seo title="About" description={about?.intro} />
+      <Seo meta={staticPageMeta('about', settings.data)} />
       <PageHeader title="About" />
 
       {settings.status === 'loading' && <PageLoading />}
