@@ -56,7 +56,7 @@
     "icoRegistrationNumber": "",
     "privacyUpdated": "2026-10-30",
     "hostingProvider": "",
-    "emailProvider": "Microsoft 365 (Microsoft Corporation)",
+    "emailProvider": "Resend (to send it) and Microsoft 365 (our inbox)",
     "_hostingComment": "Fill in hostingProvider (e.g. \"Render Services, Inc.\") once the website host is chosen. While empty, the privacy notice refers to \"our hosting provider\" without naming it."
   }
 }

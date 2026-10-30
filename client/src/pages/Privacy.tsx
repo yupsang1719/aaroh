@@ -61,10 +61,8 @@ export default function PrivacyPage() {
               </li>
               <li>
                 <strong>How:</strong> the form sends your message to our inbox by email
-                {s.legal.emailProvider ? (
-                  <> (our email is provided by {s.legal.emailProvider})</>
-                ) : null}
-                . This website does not store it in a database.
+                {s.legal.emailProvider ? <>, using {s.legal.emailProvider}</> : null}. This website
+                does not store it in a database.
               </li>
               <li>
                 <strong>How long:</strong> we keep correspondence for as long as we need it to deal

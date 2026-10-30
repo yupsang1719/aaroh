@@ -26,8 +26,9 @@ const envSchema = z
     SMTP_PORT: z.coerce.number().int().positive().default(587),
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),
-    // Microsoft 365 only lets an account send as its own address (or an alias of it).
-    SMTP_FROM: z.string().default('Aaroh website <rlp@aaroh.co.uk>'),
+    // Must be an address the SMTP service may send as: any address on a domain verified with
+    // Resend, or the mailbox's own address when sending through Microsoft 365.
+    SMTP_FROM: z.string().default('Aaroh website <website@aaroh.co.uk>'),
     // Inbox that receives contact form messages.
     CONTACT_NOTIFY_TO: z.string().default('rlp@aaroh.co.uk'),
   })

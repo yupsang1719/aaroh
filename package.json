@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "description": "Website for Aaroh, an independent music company.",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.9"
   },
   "workspaces": [
     "shared",
@@ -21,7 +21,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "dev:sample": "concurrently -n server,client -c blue,magenta \"npm:dev:sample -w server\" \"npm:dev -w client\"",
-    "check:content": "npm run check:content -w server --"
+    "check:content": "npm run check:content -w server --",
+    "email:test": "npm run email:test -w server"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.5",
