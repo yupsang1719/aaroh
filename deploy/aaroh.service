@@ -1,0 +1,36 @@
+# systemd service for the Aaroh website. Installed by deploy/setup-server.sh to
+# /etc/systemd/system/aaroh.service.
+#   status:  systemctl status aaroh
+#   logs:    journalctl -u aaroh -f
+#   restart: systemctl restart aaroh
+[Unit]
+Description=Aaroh website (aaroh.co.uk)
+After=network.target
+# Stop retrying after 5 failed starts in a minute (e.g. content still has PLACEHOLDERs).
+StartLimitIntervalSec=60
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=aaroh
+Group=aaroh
+WorkingDirectory=/var/www/aaroh/server
+EnvironmentFile=/etc/aaroh/aaroh.env
+ExecStart=/usr/bin/node dist/index.js
+Restart=always
+RestartSec=3
+
+# Hardening: the app only reads its own files and listens on 127.0.0.1.
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+
+[Install]
+WantedBy=multi-user.target

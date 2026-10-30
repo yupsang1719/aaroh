@@ -64,9 +64,14 @@ const app = createApp({
     : undefined,
 });
 
-const server = app.listen(env.PORT, () => {
-  console.log(`Aaroh server listening on http://localhost:${env.PORT} (content: ${contentDir})`);
-});
+const onListening = () => {
+  console.log(
+    `Aaroh server listening on http://${env.HOST ?? 'localhost'}:${env.PORT} (content: ${contentDir})`,
+  );
+};
+const server = env.HOST
+  ? app.listen(env.PORT, env.HOST, onListening)
+  : app.listen(env.PORT, onListening);
 
 const shutdown = () => server.close(() => process.exit(0));
 process.on('SIGTERM', shutdown);

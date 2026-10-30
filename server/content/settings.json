@@ -57,9 +57,8 @@
     "vatNumber": "",
     "icoRegistrationNumber": "",
     "privacyUpdated": "2026-10-30",
-    "hostingProvider": "",
+    "hostingProvider": "Contabo GmbH",
     "emailProvider": "Microsoft 365 (Microsoft Corporation)",
-    "_hostingComment": "Fill in hostingProvider (e.g. \"Render Services, Inc.\") once the website host is chosen. While empty, the privacy notice refers to \"our hosting provider\" without naming it.",
     "formDeliveryProvider": ""
   }
 }

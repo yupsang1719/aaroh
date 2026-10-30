@@ -8,7 +8,7 @@ Live at **https://aaroh.co.uk**.
 - [Editing content](#editing-content)
   - [Adding a release](#adding-a-release)
 - [Contact page and email](#contact-page-and-email)
-- [Deploying to Render](#deploying-to-render)
+- [Hosting on the VPS](#hosting-on-the-vps)
 - [Pointing aaroh.co.uk at the site](#pointing-aarohcouk-at-the-site)
 - [After going live](#after-going-live)
 - [Environment variables](#environment-variables)
@@ -87,8 +87,9 @@ It validates both files, checks that every `/media/...` file exists and lists an
 still contains `PLACEHOLDER`. **The production server refuses to start while any PLACEHOLDER is
 left**, so placeholder text can never go live by accident.
 
-To publish a change: commit and push to `main`. GitHub runs the checks and Render then deploys
-the new version (content is read once at start-up in production).
+To publish a change: commit and push to `main` (GitHub runs the checks), then deploy it to the
+server (see [Deploying an update](#deploying-an-update)). Content is read once at start-up in
+production, so changes appear after the deploy.
 
 Good to know:
 
@@ -206,7 +207,7 @@ Your inbox stays on Microsoft 365; Resend only delivers the form messages to it.
    (_My Products › aaroh.co.uk › DNS › Add New Record_). They sit on their own names, so they do
    not affect your Microsoft 365 email. Wait for Resend to show the domain as verified.
 3. Create an **API key** with sending access.
-4. Set these environment variables on the host (Render: _Environment_ for the `aaroh` service):
+4. Add these settings to `/etc/aaroh/aaroh.env` on the server, then `systemctl restart aaroh`:
 
    ```
    SMTP_HOST=smtp.resend.com
@@ -217,37 +218,58 @@ Your inbox stays on Microsoft 365; Resend only delivers the form messages to it.
    CONTACT_NOTIFY_TO=rlp@aaroh.co.uk
    ```
 
-5. **Test it:** `npm run email:test` (locally with these values in `server/.env`, or in the
-   Render dashboard under _Shell_). It sends one message exactly as the form does. Check the
+5. **Test it:** `npm run email:test` (locally with these values in `server/.env`, or on the
+   server: `cd /var/www/aaroh && set -a && . /etc/aaroh/aaroh.env && set +a && sudo -E -u aaroh -H npm run email:test`). It sends one message exactly as the form does. Check the
    junk folder the first time and mark it as safe.
 
 Recommended once email works: add a DMARC record in GoDaddy, `TXT` named `_dmarc` with value
 `v=DMARC1; p=none; rua=mailto:rlp@aaroh.co.uk`, so receiving servers can check mail claiming to
 be from aaroh.co.uk.
 
-## Deploying to Render
+## Hosting on the VPS
 
-The repository includes a Render Blueprint (`render.yaml`) that sets up everything: build and
-start commands, health check, environment variables and the custom domains.
+The site runs on the company VPS (Contabo, Ubuntu 24.04, `161.97.166.20`) next to the other
+sites there, without touching them:
 
-1. In [Render](https://render.com): **New › Blueprint**, connect GitHub and choose
-   `yupsang1719/aaroh`.
-2. Choose an **instance type** for the `aaroh` service. Use a paid instance (Starter or above)
-   for the live site: free instances go to sleep and take up to a minute to wake for the next
-   visitor.
-3. Create. Render builds (`npm ci --include=dev && npm run build`) and starts (`npm start`).
-   The service is healthy when `https://<service>.onrender.com/api/health` returns `{"status":"ok",…}`.
-4. Deploys then happen automatically after each push to `main` **once the GitHub checks pass**
-   (`.github/workflows/ci.yml`: format, lint, types, tests, content check, build).
+| What       | Where                                                                                                    |
+| ---------- | -------------------------------------------------------------------------------------------------------- |
+| Code       | `/var/www/aaroh`, owned by the `aaroh` system user (no password, no login)                               |
+| Settings   | `/etc/aaroh/aaroh.env` (template: `deploy/aaroh.env.example`)                                            |
+| Process    | systemd service `aaroh` (`deploy/aaroh.service`), running as `aaroh`, listening on `127.0.0.1:4100` only |
+| Web server | nginx site `/etc/nginx/sites-available/aaroh` (`deploy/nginx-aaroh.conf`), HTTPS by certbot              |
 
-The server refuses to start, with a clear message in the Render logs, if the content still has
-PLACEHOLDER values, or if the contact form is switched on without SMTP settings.
+### Deploying an update
 
-**Railway or another Node host** works the same way: build `npm ci --include=dev && npm run build`,
-start `npm start`, health check `/api/health`, and the environment variables from `render.yaml`
-(set `TRUST_PROXY=1`). Note that GoDaddy DNS cannot point the bare domain at hosts that only
-offer a CNAME target, which is one reason Render (which offers a fixed IP for the root domain)
-is the default.
+Push to `main` (CI checks it), then:
+
+```bash
+ssh root@161.97.166.20 /var/www/aaroh/deploy/deploy.sh
+```
+
+It pulls `main`, installs dependencies, checks the content, builds, restarts the service and
+waits for `/api/health`. If the new version does not start it prints the recent logs. The
+check stops the deploy before anything is replaced if the content is invalid or still has
+PLACEHOLDER values.
+
+### Day-to-day commands (on the server)
+
+```bash
+systemctl status aaroh              # is it running?
+journalctl -u aaroh -f              # live logs
+journalctl -u aaroh -n 100          # recent logs
+systemctl restart aaroh             # restart (e.g. after editing /etc/aaroh/aaroh.env)
+```
+
+### Setting up a new server
+
+`deploy/setup-server.sh` does the one-time setup on an Ubuntu server with Node.js 22.9+, nginx and
+certbot installed: creates the `aaroh` user, clones the repository to `/var/www/aaroh`, installs
+the settings file, the systemd service and the nginx site, and builds and starts the app. It then
+prints the remaining steps: enable the nginx site, point DNS, and run certbot. Copy it to the
+server and run it as root.
+
+Another host works too: build with `npm ci --include=dev && npm run build`, start with
+`npm start`, health check `/api/health`, and set the variables from `deploy/aaroh.env.example`.
 
 ## Pointing aaroh.co.uk at the site
 
@@ -255,27 +277,27 @@ The domain is registered and managed at **GoDaddy**; email is on **Microsoft 365
 website records change. **Do not touch the `MX` record, the `TXT` records (SPF and Microsoft
 verification) or the `autodiscover` and other Microsoft records**, or email will stop working.
 
-1. In Render, the Blueprint has already added `aaroh.co.uk` and `www.aaroh.co.uk` to the service
-   (_Settings › Custom Domains_). Note the service's `onrender.com` address.
-2. In GoDaddy, open _My Products › aaroh.co.uk › DNS_:
+1. In GoDaddy, open _My Products › aaroh.co.uk › DNS_:
    - Turn off any **Forwarding** set up for the domain.
-   - **`A` record, name `@`:** change it to **`216.24.57.1`** (Render). Delete any other `A`
-     records for `@`, such as GoDaddy's parking addresses `3.33.130.190` and `15.197.148.33`,
-     and any **`AAAA`** records for `@` or `www`.
-   - **`CNAME` record, name `www`:** change its value to the service's address,
-     e.g. `aaroh.onrender.com`.
-3. Back in Render, click **Verify** next to each domain. DNS changes usually take minutes but can
-   take up to 48 hours.
-4. **HTTPS is automatic.** Render issues and renews the certificate and redirects http to https.
-   `www.aaroh.co.uk` redirects to `aaroh.co.uk` (Render does this, and the server has a fallback).
+   - **`A` record, name `@`:** change it to **`161.97.166.20`**. Delete any other `A` records for
+     `@` (GoDaddy's parking addresses `3.33.130.190` and `15.197.148.33`) and any **`AAAA`**
+     records for `@` or `www`.
+   - **`www`:** change the existing `CNAME` (which points to `@`) into an **`A` record** with value
+     **`161.97.166.20`**, or leave the `CNAME` pointing to `@`; both work.
+2. Wait until `dig +short aaroh.co.uk` and `dig +short www.aaroh.co.uk` both return
+   `161.97.166.20` (usually minutes, at most 48 hours).
+3. **HTTPS**, on the server as root:
 
-Check with `dig +short aaroh.co.uk` (expect `216.24.57.1`) and by opening
-https://www.aaroh.co.uk (expect a redirect to https://aaroh.co.uk).
+   ```bash
+   certbot --nginx -d aaroh.co.uk -d www.aaroh.co.uk --redirect
+   ```
+
+   Certbot issues the certificate, adds HTTPS to the nginx site, redirects http to https and
+   renews automatically (like the other sites on the server). `www.aaroh.co.uk` then redirects
+   to `https://aaroh.co.uk` (the app does this).
 
 ## After going live
 
-- [ ] Set `legal.hostingProvider` in `server/content/settings.json` to `Render Services, Inc.`
-      (named in the privacy notice), then push.
 - [ ] On the live Contact page, check **Email us** opens a new email to `rlp@aaroh.co.uk` and
       send yourself a test from another address.
 - [ ] Check a link preview: paste https://aaroh.co.uk into a WhatsApp or iMessage chat, or use
@@ -293,19 +315,20 @@ https://www.aaroh.co.uk (expect a redirect to https://aaroh.co.uk).
 
 Server (`server/.env` locally, the host's settings in production). See `server/.env.example`.
 
-| Variable                                            | Default                               | Notes                                                                              |
-| --------------------------------------------------- | ------------------------------------- | ---------------------------------------------------------------------------------- |
-| `NODE_ENV`                                          | `development`                         | `production` on the host.                                                          |
-| `PORT`                                              | `4000`                                | Set automatically by Render.                                                       |
-| `SITE_URL`                                          | `https://aaroh.co.uk`                 | Used for canonical URLs, share images, sitemap and structured data.                |
-| `CONTENT_DIR`                                       | `server/content`                      | Content folder. `npm run dev:sample` points it at `server/content-sample`.         |
-| `TRUST_PROXY`                                       | `0`                                   | `1` behind Render/Railway, so the contact form's rate limit sees real visitor IPs. |
-| `CLIENT_ORIGIN`                                     | `http://localhost:5173`               | Browser origins allowed by CORS (comma-separated). Only matters in development.    |
-| `CLIENT_DIST_DIR`                                   | `client/dist`                         | Built website location in production. Rarely needs setting.                        |
-| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`  | `587` for the port                    | Contact form email. Required in production only while the contact form is on.      |
-| `SMTP_FROM`                                         | `Aaroh website <website@aaroh.co.uk>` | Sender. Must be allowed by the SMTP service.                                       |
-| `CONTACT_NOTIFY_TO`                                 | `rlp@aaroh.co.uk`                     | Inbox for contact form messages.                                                   |
-| `CONTACT_RATE_LIMIT`, `CONTACT_RATE_WINDOW_MINUTES` | `5`, `15`                             | Messages allowed per IP address per window.                                        |
+| Variable                                            | Default                               | Notes                                                                                                  |
+| --------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `HOST`                                              | all interfaces                        | `127.0.0.1` on the VPS, so only nginx can reach the app.                                               |
+| `NODE_ENV`                                          | `development`                         | `production` on the host.                                                                              |
+| `PORT`                                              | `4000`                                | `4100` on the VPS (see `deploy/aaroh.env.example`).                                                    |
+| `SITE_URL`                                          | `https://aaroh.co.uk`                 | Used for canonical URLs, share images, sitemap and structured data.                                    |
+| `CONTENT_DIR`                                       | `server/content`                      | Content folder. `npm run dev:sample` points it at `server/content-sample`.                             |
+| `TRUST_PROXY`                                       | `0`                                   | `1` behind nginx (the VPS) or a hosting proxy, so the contact form's rate limit sees real visitor IPs. |
+| `CLIENT_ORIGIN`                                     | `http://localhost:5173`               | Browser origins allowed by CORS (comma-separated). Only matters in development.                        |
+| `CLIENT_DIST_DIR`                                   | `client/dist`                         | Built website location in production. Rarely needs setting.                                            |
+| `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`  | `587` for the port                    | Contact form email. Required in production only while the contact form is on.                          |
+| `SMTP_FROM`                                         | `Aaroh website <website@aaroh.co.uk>` | Sender. Must be allowed by the SMTP service.                                                           |
+| `CONTACT_NOTIFY_TO`                                 | `rlp@aaroh.co.uk`                     | Inbox for contact form messages.                                                                       |
+| `CONTACT_RATE_LIMIT`, `CONTACT_RATE_WINDOW_MINUTES` | `5`, `15`                             | Messages allowed per IP address per window.                                                            |
 
 Website (`client/.env`, read at build time; see `client/.env.example`): `VITE_SITE_URL`
 (default `https://aaroh.co.uk`; keep it the same as `SITE_URL`).
@@ -362,7 +385,7 @@ hosted by the CMS, return responsive image URLs from `imageSrcSet()` in
   SMTP variables on the host (see [Contact page and email](#contact-page-and-email)) or set
   `contactFormEnabled` back to `false`.
 - **Contact form says "Your message could not be sent":** the email service rejected the message.
-  The Render logs show the reason; run `npm run email:test` in the Render Shell. Usually the
+  `journalctl -u aaroh -n 50` on the server shows the reason; `npm run email:test` reproduces it. Usually the
   API key is wrong or the domain is not yet verified in Resend.
 - **Link preview shows old information:** social networks cache previews. Use the
   [LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/) or the

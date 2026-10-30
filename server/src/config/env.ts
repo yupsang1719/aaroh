@@ -3,6 +3,8 @@ import { z } from 'zod';
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.coerce.number().int().positive().default(4000),
+  // Interface to listen on. On the VPS: 127.0.0.1, so only nginx can reach the app.
+  HOST: z.string().optional(),
   SITE_URL: z
     .url()
     .default('https://aaroh.co.uk')
