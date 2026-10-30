@@ -1,7 +1,7 @@
 /// <reference types="vitest/config" />
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { defineConfig, type Plugin } from 'vite';
+import { defineConfig, type Plugin, type ProxyOptions } from 'vite';
 import react from '@vitejs/plugin-react';
 
 /**
@@ -35,6 +35,25 @@ function preloadFonts(): Plugin {
 // Checked at build time (and when the dev server starts), so adding a logo needs a rebuild.
 const hasLogo = existsSync(fileURLToPath(new URL('./public/brand/logo.svg', import.meta.url)));
 
+// Requests for data, media and SEO files go to the Express server in development.
+const API_SERVER = 'http://localhost:4000';
+let lastHint = 0;
+const toApiServer: ProxyOptions = {
+  target: API_SERVER,
+  configure: (proxy) => {
+    proxy.on('error', (err: NodeJS.ErrnoException) => {
+      // The usual cause: only the client was started (e.g. `npm run dev` inside client/).
+      if (!/ECONNREFUSED/.test(`${err.code} ${err.message}`) || Date.now() - lastHint < 10_000)
+        return;
+      lastHint = Date.now();
+      console.warn(
+        `\n  The API server is not running on ${API_SERVER}.\n` +
+          '  Start the whole site from the repository root:  npm run dev\n',
+      );
+    });
+  },
+};
+
 export default defineConfig({
   plugins: [react(), preloadFonts()],
   define: {
@@ -43,10 +62,10 @@ export default defineConfig({
   server: {
     port: 5173,
     proxy: {
-      '/api': 'http://localhost:4000',
-      '/media': 'http://localhost:4000',
-      '/sitemap.xml': 'http://localhost:4000',
-      '/robots.txt': 'http://localhost:4000',
+      '/api': toApiServer,
+      '/media': toApiServer,
+      '/sitemap.xml': toApiServer,
+      '/robots.txt': toApiServer,
     },
   },
   build: {
