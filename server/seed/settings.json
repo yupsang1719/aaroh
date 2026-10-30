@@ -1,0 +1,83 @@
+{
+  "_comment": "PLACEHOLDER site settings. contactEmail hello@aaroh.co.uk is a PLACEHOLDER until confirmed; social URLs are PLACEHOLDERs.",
+  "companyName": "Aaroh",
+  "tagline": "PLACEHOLDER: Original music and the films that go with it.",
+  "hero": {
+    "mode": "collage",
+    "videoUrl": "",
+    "posterUrl": "/placeholder/hero-poster.svg",
+    "collageImages": [
+      {
+        "url": "/placeholder/first-light-still-1.svg",
+        "alt": "PLACEHOLDER: Still from First Light"
+      },
+      {
+        "url": "/placeholder/low-tide-still-2.svg",
+        "alt": "PLACEHOLDER: Behind the scenes on Low Tide"
+      },
+      {
+        "url": "/placeholder/first-light-still-2.svg",
+        "alt": "PLACEHOLDER: Behind the scenes on First Light"
+      },
+      { "url": "/placeholder/low-tide-still-1.svg", "alt": "PLACEHOLDER: Still from Low Tide" },
+      {
+        "url": "/placeholder/first-light-still-3.svg",
+        "alt": "PLACEHOLDER: Close-up from First Light"
+      },
+      { "url": "/placeholder/low-tide-still-3.svg", "alt": "PLACEHOLDER: Night shot from Low Tide" }
+    ]
+  },
+  "about": {
+    "intro": "PLACEHOLDER: Aaroh is an independent music company. We write and release original songs, and make a film for every one of them.",
+    "story": "PLACEHOLDER: Why we started. A few paragraphs about the people behind Aaroh and what we care about.\n\nPLACEHOLDER: A second paragraph about how we work and who we work with.",
+    "location": "PLACEHOLDER: London, UK"
+  },
+  "team": [
+    {
+      "name": "PLACEHOLDER Name",
+      "role": "Founder, Producer",
+      "photoUrl": "/placeholder/team-1.svg"
+    },
+    { "name": "PLACEHOLDER Name", "role": "Director", "photoUrl": "/placeholder/team-2.svg" },
+    { "name": "PLACEHOLDER Name", "role": "Editor", "photoUrl": "/placeholder/team-3.svg" }
+  ],
+  "processSteps": [
+    {
+      "title": "Idea",
+      "text": "PLACEHOLDER: Every release starts with a song idea and a picture of the film that could go with it."
+    },
+    {
+      "title": "Demo",
+      "text": "PLACEHOLDER: We shape the song quickly and roughly, to find out what it wants to be."
+    },
+    {
+      "title": "Studio",
+      "text": "PLACEHOLDER: Recording, arranging and mixing the final track.",
+      "imageUrl": "/placeholder/process-studio.svg",
+      "imageAlt": "PLACEHOLDER: The studio during a session"
+    },
+    {
+      "title": "Shoot",
+      "text": "PLACEHOLDER: A small crew, a clear idea and usually not much time.",
+      "imageUrl": "/placeholder/process-shoot.svg",
+      "imageAlt": "PLACEHOLDER: Crew on a video shoot"
+    },
+    {
+      "title": "Edit",
+      "text": "PLACEHOLDER: Cutting the film to the song, then grading and finishing.",
+      "imageUrl": "/placeholder/process-edit.svg",
+      "imageAlt": "PLACEHOLDER: Editing suite"
+    },
+    {
+      "title": "Release",
+      "text": "PLACEHOLDER: The song and the film go out together, on the same day."
+    }
+  ],
+  "contactEmail": "hello@aaroh.co.uk",
+  "socials": {
+    "instagram": "https://www.instagram.com/PLACEHOLDER",
+    "youtube": "https://www.youtube.com/@PLACEHOLDER",
+    "tiktok": "https://www.tiktok.com/@PLACEHOLDER",
+    "spotify": "https://open.spotify.com/PLACEHOLDER"
+  }
+}

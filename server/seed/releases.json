@@ -1,0 +1,95 @@
+[
+  {
+    "_comment": "PLACEHOLDER release. youtubeId is Big Buck Bunny (Blender Foundation, CC BY); replace with the real video ID.",
+    "title": "First Light (PLACEHOLDER)",
+    "slug": "first-light",
+    "artist": "PLACEHOLDER Artist",
+    "releaseDate": "2026-09-18",
+    "summary": "PLACEHOLDER: A slow-building song about early mornings, and a film shot in one take as the sun comes up.",
+    "story": "PLACEHOLDER: This is where the story of the release goes. How the song started, what it is about, and how the idea for the film grew out of it.\n\nPLACEHOLDER: A second paragraph about the shoot. Where it happened, who was there, what went wrong and what turned out better than planned.\n\nPLACEHOLDER: A short closing paragraph.",
+    "youtubeId": "aqz-KE-bpKQ",
+    "streamingLinks": {
+      "spotify": "https://open.spotify.com/PLACEHOLDER",
+      "appleMusic": "https://music.apple.com/PLACEHOLDER",
+      "youtubeMusic": "https://music.youtube.com/PLACEHOLDER",
+      "other": [{ "label": "Bandcamp", "url": "https://bandcamp.com/PLACEHOLDER" }]
+    },
+    "coverImage": {
+      "url": "/placeholder/first-light-cover.svg",
+      "alt": "PLACEHOLDER: Still from the First Light video"
+    },
+    "stills": [
+      {
+        "url": "/placeholder/first-light-still-1.svg",
+        "alt": "PLACEHOLDER: Wide shot from the First Light video",
+        "caption": "PLACEHOLDER: The opening shot, 5.40am."
+      },
+      {
+        "url": "/placeholder/first-light-still-2.svg",
+        "alt": "PLACEHOLDER: Behind the scenes, setting up the camera",
+        "caption": "PLACEHOLDER: Setting up before sunrise."
+      },
+      {
+        "url": "/placeholder/first-light-still-3.svg",
+        "alt": "PLACEHOLDER: Close-up from the First Light video"
+      },
+      {
+        "url": "/placeholder/first-light-still-4.svg",
+        "alt": "PLACEHOLDER: Behind the scenes, the crew watching playback",
+        "caption": "PLACEHOLDER: Watching the take back."
+      }
+    ],
+    "credits": [
+      { "role": "Artist", "name": "PLACEHOLDER Artist" },
+      { "role": "Producer", "name": "PLACEHOLDER Name" },
+      { "role": "Director", "name": "PLACEHOLDER Name" },
+      { "role": "Director of Photography", "name": "PLACEHOLDER Name" },
+      { "role": "Editor", "name": "PLACEHOLDER Name" }
+    ],
+    "featured": true,
+    "published": true,
+    "order": 1
+  },
+  {
+    "_comment": "PLACEHOLDER release. youtubeId is Sintel (Blender Foundation, CC BY); replace with the real video ID.",
+    "title": "Low Tide (PLACEHOLDER)",
+    "slug": "low-tide",
+    "artist": "PLACEHOLDER Artist",
+    "releaseDate": "2026-05-22",
+    "summary": "PLACEHOLDER: A quiet song recorded live in one room, with a video filmed on the coast over two days.",
+    "story": "PLACEHOLDER: The story behind the second release. Where the song came from and why it needed this particular film.\n\nPLACEHOLDER: Notes from the studio and the shoot.",
+    "youtubeId": "eRsGyueVLvQ",
+    "streamingLinks": {
+      "spotify": "https://open.spotify.com/PLACEHOLDER",
+      "appleMusic": "https://music.apple.com/PLACEHOLDER"
+    },
+    "coverImage": {
+      "url": "/placeholder/low-tide-cover.svg",
+      "alt": "PLACEHOLDER: Still from the Low Tide video"
+    },
+    "stills": [
+      {
+        "url": "/placeholder/low-tide-still-1.svg",
+        "alt": "PLACEHOLDER: The coastline from the Low Tide video",
+        "caption": "PLACEHOLDER: Day one, low tide."
+      },
+      {
+        "url": "/placeholder/low-tide-still-2.svg",
+        "alt": "PLACEHOLDER: Behind the scenes on the beach"
+      },
+      {
+        "url": "/placeholder/low-tide-still-3.svg",
+        "alt": "PLACEHOLDER: Night shot from the Low Tide video"
+      }
+    ],
+    "credits": [
+      { "role": "Artist", "name": "PLACEHOLDER Artist" },
+      { "role": "Producer", "name": "PLACEHOLDER Name" },
+      { "role": "Director", "name": "PLACEHOLDER Name" },
+      { "role": "Editor", "name": "PLACEHOLDER Name" }
+    ],
+    "featured": false,
+    "published": true,
+    "order": 2
+  }
+]

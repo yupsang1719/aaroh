@@ -1,0 +1,7 @@
+<!-- PLACEHOLDER image: replace with real photography -->
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#283322"/><stop offset="1" stop-color="#4F6143"/></linearGradient></defs>
+  <rect width="1200" height="1500" fill="url(#g)"/>
+  <circle cx="864" cy="570" r="264" fill="#F6F4EF" fill-opacity="0.07"/>
+  <text x="60" y="1440" font-family="system-ui, sans-serif" font-size="34" letter-spacing="2" fill="#F6F4EF" fill-opacity="0.7">PLACEHOLDER · LOW TIDE · BTS 1</text>
+</svg>
