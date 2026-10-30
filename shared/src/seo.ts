@@ -7,9 +7,9 @@ import type { Release, SiteSettings } from './content';
 
 export const SITE_NAME = 'Aaroh';
 
-// PLACEHOLDER: default description, used when a page has nothing more specific.
+// Default description, used when a page has nothing more specific.
 export const DEFAULT_DESCRIPTION =
-  'Aaroh is an independent music company making original songs and the films that go with them.';
+  'Aaroh Entertainment is an independent music and film company making original songs and the music videos that go with them.';
 
 /** Default share image: a 1200×630 PNG, the size link previews expect. */
 export const DEFAULT_SHARE_IMAGE = '/brand/og-default.png';

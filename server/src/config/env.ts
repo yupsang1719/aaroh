@@ -26,9 +26,10 @@ const envSchema = z
     SMTP_PORT: z.coerce.number().int().positive().default(587),
     SMTP_USER: z.string().optional(),
     SMTP_PASS: z.string().optional(),
-    SMTP_FROM: z.string().default('Aaroh website <no-reply@aaroh.co.uk>'),
+    // Microsoft 365 only lets an account send as its own address (or an alias of it).
+    SMTP_FROM: z.string().default('Aaroh website <rlp@aaroh.co.uk>'),
     // Inbox that receives contact form messages.
-    CONTACT_NOTIFY_TO: z.string().default('hello@aaroh.co.uk'),
+    CONTACT_NOTIFY_TO: z.string().default('rlp@aaroh.co.uk'),
   })
   .superRefine((env, ctx) => {
     if (env.NODE_ENV !== 'production') return;
