@@ -5,33 +5,48 @@
 #   ssh root@161.97.166.20 /var/www/aaroh/deploy/deploy.sh
 set -euo pipefail
 
+# npm's update notifier and funding/audit messages run in a detached background process that
+# keeps the SSH connection open after the deploy has finished. Switch them off, and never read
+# from the SSH session's input.
+export npm_config_update_notifier=false npm_config_fund=false npm_config_audit=false
+exec </dev/null
+
 APP_DIR=/var/www/aaroh
-PORT=$(grep -E '^PORT=' /etc/aaroh/aaroh.env | cut -d= -f2)
-as_app() { sudo -u aaroh -H "$@"; }
 
-cd "$APP_DIR"
-echo "→ Fetching latest code"
-as_app git pull --ff-only --quiet origin main
-echo "  $(as_app git log -1 --format='%h %s')"
+# Everything runs inside main(), which bash reads in full before starting. The script pulls new
+# code (possibly a new version of this file) while running, which must not change what runs now.
+main() {
+  local port
+  port=$(grep -E '^PORT=' /etc/aaroh/aaroh.env | cut -d= -f2)
+  as_app() { sudo -u aaroh -H "$@"; }
 
-echo "→ Installing dependencies"
-as_app npm ci --include=dev --no-audit --no-fund --loglevel=error
+  cd "$APP_DIR"
+  echo "→ Fetching latest code"
+  as_app git pull --ff-only --quiet origin main
+  echo "  $(as_app git log -1 --format='%h %s')"
 
-echo "→ Checking content"
-as_app npm run --silent check:content
+  echo "→ Installing dependencies"
+  as_app npm ci --include=dev --loglevel=error
 
-echo "→ Building"
-as_app npm run --silent build >/dev/null
+  echo "→ Checking content"
+  as_app npm run --silent check:content
 
-echo "→ Restarting"
-systemctl restart aaroh
-for _ in $(seq 1 30); do
-  if curl -fsS "http://127.0.0.1:${PORT}/api/health" >/dev/null 2>&1; then
-    echo "✓ Live: $(as_app git log -1 --format='%h %s')"
-    exit 0
-  fi
-  sleep 1
-done
-echo "✗ The site did not come back. Recent logs:"
-journalctl -u aaroh -n 30 --no-pager
-exit 1
+  echo "→ Building"
+  as_app npm run --silent build >/dev/null
+
+  echo "→ Restarting"
+  systemctl restart aaroh
+  for _ in $(seq 1 30); do
+    if curl -fsS "http://127.0.0.1:${port}/api/health" >/dev/null 2>&1; then
+      echo "✓ Live: $(as_app git log -1 --format='%h %s')"
+      return 0
+    fi
+    sleep 1
+  done
+  echo "✗ The site did not come back. Recent logs:"
+  journalctl -u aaroh -n 30 --no-pager
+  return 1
+}
+
+main "$@"
+exit $?
