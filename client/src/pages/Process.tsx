@@ -40,9 +40,11 @@ export default function ProcessPage() {
 
           <ol className="wrap mt-16 md:mt-28">
             {steps.map((step, i) => (
-              <li key={step.title} className="border-t border-line py-10 md:py-16">
-                <Reveal className="grid gap-6 md:grid-cols-12 md:gap-10">
-                  <p className="font-display text-display-sm font-medium text-muted md:col-span-2">
+              <li key={step.title}>
+                <Reveal className="grid gap-6 pb-10 md:grid-cols-12 md:gap-10 md:pb-16">
+                  {/* Hairline that draws in as the step scrolls into view. */}
+                  <div aria-hidden="true" className="draw h-px bg-fg/25 md:col-span-12" />
+                  <p className="font-serif text-serif-md italic leading-none text-accent md:col-span-2 md:pt-2">
                     {number(i)}
                   </p>
                   <div className={cn(step.imageUrl ? 'md:col-span-4' : 'md:col-span-6')}>

@@ -4,6 +4,7 @@ import { cn } from '../lib/cn';
 import { useReducedMotion } from '../lib/useReducedMotion';
 import { Img } from './Img';
 import { Logo } from './Logo';
+import { RisingScale } from './RisingScale';
 
 // Hand-placed collage positions (mobile: 6×8 grid, desktop: 12×8 grid). Up to six images;
 // the gaps between them are deliberate. Classes are written out in full for Tailwind.
@@ -110,32 +111,65 @@ function HeroVideo({ src, poster }: { src: string; poster?: string }) {
   );
 }
 
-/** No images yet: the wordmark on its own, large and confident. */
-function WordmarkOnly() {
+/**
+ * No images yet: a dark "ink" panel with the wordmark, the tagline in serif italic, a slow warm
+ * glow and the rising-scale motif. The wordmark is the largest element and is never animated,
+ * so it paints at once (good for Largest Contentful Paint).
+ */
+function InkHero({ tagline }: { tagline: string }) {
   return (
-    <div className="wrap flex min-h-[40svh] items-end pb-2 md:min-h-[55svh] md:pb-4">
-      {/* No entrance animation: this is the largest element, so it should paint at once. */}
-      <h1>
-        <Logo className="text-[28vw] md:text-display-xl" />
-      </h1>
+    <div className="wrap">
+      <div className="on-ink grain relative isolate flex min-h-[64svh] flex-col justify-between overflow-hidden rounded-[1.75rem] px-6 py-8 md:min-h-[74svh] md:rounded-[2.5rem] md:px-14 md:py-14">
+        {/* Warm glows drifting slowly (plain gradients: cheap to animate). */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-[20%] -top-[30%] -z-10 aspect-square w-[85%] animate-drift rounded-full bg-[radial-gradient(circle,rgba(184,63,18,0.55),transparent_62%)] md:w-[60%]"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-[35%] -left-[15%] -z-10 aspect-square w-[80%] animate-drift rounded-full bg-[radial-gradient(circle,rgba(224,168,75,0.38),transparent_60%)] [animation-delay:-9s] md:w-[55%]"
+        />
+
+        <div className="flex items-start justify-between gap-6">
+          <p className="eyebrow animate-rise [animation-delay:150ms]">
+            Independent music &amp; film
+          </p>
+          <RisingScale className="h-16 md:h-28" />
+        </div>
+
+        <div>
+          <h1>
+            <Logo className="text-[28vw] md:text-display-xl" />
+          </h1>
+          {tagline && (
+            <p className="mt-4 max-w-4xl text-balance font-serif text-serif-lg italic text-gold md:mt-6">
+              {tagline}
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
 
-export function Hero({ hero }: { hero: SiteSettings['hero'] }) {
+/** Whether the hero itself shows the tagline (otherwise the page shows it below the hero). */
+export function heroShowsTagline(hero: SiteSettings['hero']): boolean {
+  return !(hero.mode === 'video' && hero.videoUrl) && hero.collageImages.length === 0;
+}
+
+export function Hero({ hero, tagline }: { hero: SiteSettings['hero']; tagline: string }) {
   if (hero.mode === 'video' && hero.videoUrl) {
     return <HeroVideo src={hero.videoUrl} poster={hero.posterUrl} />;
   }
-  if (hero.collageImages.length === 0) return <WordmarkOnly />;
+  if (hero.collageImages.length === 0) return <InkHero tagline={tagline} />;
   return <Collage images={hero.collageImages} />;
 }
 
 /** Reserves the hero's space while settings load, so nothing jumps. */
 export function HeroPlaceholder() {
   return (
-    <div className="wrap relative">
-      <Wordmark stacked />
-      <div className="aspect-[3/4] sm:aspect-[4/3] md:aspect-auto md:h-[min(86vh,940px)]" />
+    <div className="wrap">
+      <div className="min-h-[64svh] rounded-[1.75rem] bg-ink md:min-h-[74svh] md:rounded-[2.5rem]" />
     </div>
   );
 }

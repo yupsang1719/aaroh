@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type ElementType,
@@ -17,11 +18,27 @@ interface RevealProps extends HTMLAttributes<HTMLElement> {
   delay?: number;
 }
 
-/** Fades content up once as it scrolls into view. Does nothing with reduced motion. */
+/**
+ * Fades content up once as it scrolls into view. Content already on screen when the page
+ * loads shows at once (fading it in would only delay the first paint); with reduced motion
+ * nothing animates.
+ */
 export function Reveal({ children, as: Tag = 'div', className, delay = 0, ...rest }: RevealProps) {
   const ref = useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
   const [visible, setVisible] = useState(false);
+  // Shown at load without a fade: measuring the element has already applied its hidden style,
+  // so the transition must be switched off or it would still fade in.
+  const [instant, setInstant] = useState(false);
+
+  // Before the first paint: if this is already in view, skip the reveal.
+  useLayoutEffect(() => {
+    const top = ref.current?.getBoundingClientRect().top;
+    if (top !== undefined && top < window.innerHeight) {
+      setInstant(true);
+      setVisible(true);
+    }
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -44,7 +61,7 @@ export function Reveal({ children, as: Tag = 'div', className, delay = 0, ...res
     <Tag
       {...rest}
       ref={ref}
-      className={cn('reveal', className)}
+      className={cn('reveal', instant && '!transition-none', className)}
       data-hidden={hidden || undefined}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >

@@ -13,6 +13,9 @@ export function Layout() {
   const mainRef = useRef<HTMLElement>(null);
   const { pathname } = useLocation();
   const previousPath = useRef(pathname);
+  // The first page a visitor lands on appears at once; later pages fade in. (Animating the
+  // first page would delay when its content counts as painted.)
+  const [landingPath] = useState(pathname);
 
   // After client-side navigation, move focus to the new page so keyboard and
   // screen reader users start at its content, as they would on a full page load.
@@ -46,7 +49,9 @@ export function Layout() {
         className="min-h-[100svh] flex-1"
         inert={menuOpen}
       >
-        <Outlet />
+        <div key={pathname} className={pathname === landingPath ? undefined : 'animate-enter'}>
+          <Outlet />
+        </div>
       </main>
       <div inert={menuOpen}>
         <Footer />

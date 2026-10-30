@@ -91,7 +91,7 @@ export function EmailContact({ email }: { email: string }) {
           <li key={topic.type} className="border-b border-line">
             <a
               href={mailto(email, topic.subject)}
-              className="group grid gap-1 py-5 sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)_auto] sm:items-baseline sm:gap-6 md:py-6"
+              className="group -mx-3 grid gap-1 rounded-xl px-3 py-5 transition-colors duration-300 hover:bg-accent/[0.06] sm:grid-cols-[minmax(0,2fr)_minmax(0,3fr)_auto] sm:items-baseline sm:gap-6 md:py-6"
             >
               <span className="font-display text-xl font-semibold transition-colors duration-200 group-hover:text-accent md:text-2xl">
                 {topic.title}

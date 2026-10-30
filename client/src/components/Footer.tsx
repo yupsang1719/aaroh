@@ -9,7 +9,7 @@ export function Footer() {
   const showContact = useLocation().pathname !== '/contact';
 
   return (
-    <footer className="mt-24 border-t border-line md:mt-40">
+    <footer className="on-ink grain relative mt-24 md:mt-40">
       {showContact && (
         <div className="wrap grid gap-12 py-12 sm:grid-cols-2 md:py-16 lg:grid-cols-12">
           <div className="sm:col-span-2 lg:col-span-7">
@@ -17,7 +17,7 @@ export function Footer() {
             {settings && (
               <a
                 href={`mailto:${settings.contactEmail}`}
-                className="mt-4 inline-block break-all font-display text-display-md font-semibold transition-colors duration-200 hover:text-accent"
+                className="mt-4 inline-block break-all font-display text-display-md font-semibold transition-colors duration-200 hover:text-gold"
               >
                 {settings.contactEmail}
               </a>
@@ -42,7 +42,7 @@ export function Footer() {
 
       <div className="wrap">
         <div
-          className={`grid gap-4 py-6 text-sm text-muted md:grid-cols-12 md:gap-10 ${showContact ? 'border-t border-line' : ''}`}
+          className={`grid gap-4 py-6 text-sm text-ink-muted md:grid-cols-12 md:gap-10 ${showContact ? 'border-t border-ink-line' : ''}`}
         >
           <div className="md:col-span-8">
             {settings && <CompanyDetails legal={settings.legal} compact />}

@@ -1,10 +1,20 @@
 import { staticPageMeta } from '@aaroh/shared/seo';
 import { Link } from 'react-router';
 import { Seo } from '../components/Seo';
-import { Hero, HeroPlaceholder } from '../components/Hero';
+import { Hero, HeroPlaceholder, heroShowsTagline } from '../components/Hero';
+import { Marquee } from '../components/Marquee';
 import { FeaturedRelease } from '../components/FeaturedRelease';
 import { Reveal } from '../components/Reveal';
 import { useReleases, useSettings } from '../lib/useApi';
+
+// What Aaroh does (the company's registered activities), shown in the band under the hero.
+const WHAT_WE_DO = [
+  'Original music',
+  'Music videos',
+  'Sound recording',
+  'Film production',
+  'Post-production',
+];
 
 export default function HomePage() {
   const settings = useSettings();
@@ -15,11 +25,19 @@ export default function HomePage() {
     <>
       <Seo meta={staticPageMeta('home', settings.data)} />
 
-      {settings.data ? <Hero hero={settings.data.hero} /> : <HeroPlaceholder />}
+      {settings.data ? (
+        <Hero hero={settings.data.hero} tagline={settings.data.tagline} />
+      ) : (
+        <HeroPlaceholder />
+      )}
 
-      {settings.data?.tagline && (
+      <div className="mt-10 md:mt-16">
+        <Marquee items={WHAT_WE_DO} />
+      </div>
+
+      {settings.data?.tagline && !heroShowsTagline(settings.data.hero) && (
         <Reveal className="wrap py-16 md:py-28">
-          <p className="max-w-5xl font-display text-display-md font-medium">
+          <p className="max-w-5xl text-balance font-serif text-serif-lg italic">
             {settings.data.tagline}
           </p>
         </Reveal>
@@ -30,9 +48,9 @@ export default function HomePage() {
       ) : (
         // Before the first release: a short introduction that leads into the site.
         settings.data?.about.intro && (
-          <Reveal className="wrap">
-            <div className="grid gap-8 border-t border-line pt-8 md:grid-cols-12 md:pt-10">
-              <p className="text-lg text-muted md:col-span-7 md:text-xl">
+          <Reveal className="wrap mt-16 md:mt-24">
+            <div className="grid gap-10 md:grid-cols-12">
+              <p className="font-serif text-3xl leading-[1.15] md:col-span-7 md:text-[2.6rem]">
                 {settings.data.about.intro}
               </p>
               <ul className="flex flex-wrap gap-x-8 gap-y-3 text-lg font-medium md:col-span-4 md:col-start-9 md:flex-col">

@@ -22,9 +22,7 @@ export default function AboutPage() {
 
       {about && (
         <div className="wrap">
-          {about.intro && (
-            <p className="max-w-5xl font-display text-display-md font-medium">{about.intro}</p>
-          )}
+          {about.intro && <p className="max-w-5xl font-serif text-serif-lg">{about.intro}</p>}
 
           <div className="mt-16 grid gap-12 md:mt-28 lg:grid-cols-12 lg:gap-10">
             {about.story && (
@@ -46,7 +44,7 @@ export default function AboutPage() {
                 <h2 id="where" className="eyebrow">
                   Where we are
                 </h2>
-                <p className="mt-6 font-display text-display-sm font-medium">{about.location}</p>
+                <p className="mt-6 font-serif text-serif-md italic">{about.location}</p>
               </Reveal>
             )}
           </div>

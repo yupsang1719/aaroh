@@ -14,7 +14,9 @@ function preloadFonts(): Plugin {
     apply: 'build',
     transformIndexHtml(_html, ctx) {
       const fonts = Object.keys(ctx.bundle ?? {}).filter((file) =>
-        /\/inter(-tight)?-latin-wght-normal-[\w-]+\.woff2$/.test(file),
+        /\/(inter(-tight)?-latin-wght-normal|instrument-serif-latin-400-(italic|normal))-[\w-]+\.woff2$/.test(
+          file,
+        ),
       );
       return fonts.map((file) => ({
         tag: 'link',

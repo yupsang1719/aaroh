@@ -53,10 +53,12 @@ export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
                   to={item.to}
                   className={({ isActive }) =>
                     cn(
-                      'py-2 transition-colors duration-200 hover:text-fg',
+                      // Underline that sweeps in from the left on hover; stays for the current page.
+                      'relative py-2 transition-colors duration-200 hover:text-fg',
+                      'after:absolute after:inset-x-0 after:bottom-0.5 after:h-0.5 after:origin-left after:rounded-full after:bg-accent after:transition-transform after:duration-300 after:ease-out',
                       isActive
-                        ? 'text-fg underline decoration-accent decoration-2 underline-offset-[0.4em]'
-                        : 'text-muted',
+                        ? 'text-fg after:scale-x-100'
+                        : 'text-muted after:scale-x-0 hover:after:scale-x-100',
                     )
                   }
                 >

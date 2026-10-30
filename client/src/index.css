@@ -16,7 +16,7 @@
   }
 
   ::selection {
-    @apply bg-fg text-bg;
+    @apply bg-accent text-bg;
   }
 
   :focus-visible {
@@ -47,9 +47,41 @@
     @apply mx-auto w-full max-w-site px-5 sm:px-8 lg:px-12;
   }
 
-  /* Small uppercase label above sections and in meta rows. */
+  /* Small uppercase label above sections and in meta rows, led by a short accent rule. */
   .eyebrow {
     @apply text-xs font-medium uppercase tracking-[0.14em] text-muted;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply mr-[0.7em] inline-block h-px w-5 bg-accent align-middle;
+  }
+
+  /* Dark "ink" surfaces (home hero, footer): light text, gold accents and focus ring. */
+  .on-ink {
+    @apply bg-ink text-ink-fg;
+  }
+  .on-ink .eyebrow {
+    @apply text-ink-muted;
+  }
+  .on-ink .eyebrow::before {
+    @apply bg-gold;
+  }
+  .on-ink :focus-visible {
+    @apply outline-gold;
+  }
+  .on-ink ::selection {
+    @apply bg-gold text-ink;
+  }
+
+  /* Film grain over a surface (decorative; the element needs position: relative). */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.09;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   /* Scroll reveal (see <Reveal>): content fades and rises in once. */
@@ -59,10 +91,20 @@
   .reveal[data-hidden] {
     @apply translate-y-6 opacity-0;
   }
+  /* A rule that draws itself from the left as its <Reveal> comes into view. */
+  .draw {
+    @apply origin-left transition-transform delay-150 duration-1000 ease-out;
+  }
+  .reveal[data-hidden] .draw {
+    @apply scale-x-0;
+  }
 
   /* Text link: a visible underline (links share the text colour, so it is the cue) that
      turns solid on hover. */
   .link {
-    @apply underline decoration-muted/60 decoration-1 underline-offset-[0.2em] transition-colors duration-200 hover:decoration-fg;
+    @apply underline decoration-muted/60 decoration-1 underline-offset-[0.2em] transition-colors duration-200 hover:text-accent hover:decoration-current;
+  }
+  .on-ink .link {
+    @apply decoration-ink-muted/70 hover:text-gold;
   }
 }

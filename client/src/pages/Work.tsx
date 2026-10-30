@@ -21,7 +21,7 @@ export default function WorkPage() {
       {releases.status === 'error' && <PageError error={releases.error} />}
       {releases.data?.length === 0 && (
         <div className="wrap">
-          <p className="border-t border-line pt-8 font-display text-display-sm font-medium">
+          <p className="border-t border-line pt-8 font-serif text-serif-lg italic text-muted">
             {settings.data?.workEmptyNote}
           </p>
         </div>
