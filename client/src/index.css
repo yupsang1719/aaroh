@@ -3,8 +3,22 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    @apply bg-fg text-bg;
+  }
+
   :focus-visible {
-    @apply outline outline-2 outline-offset-2 outline-accent;
+    @apply outline outline-2 outline-offset-4 outline-accent;
+  }
+
+  /* Elements focused by script (e.g. <main> after navigation) need no ring. */
+  [tabindex='-1']:focus {
+    outline: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -16,5 +30,22 @@
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
+  }
+}
+
+@layer components {
+  /* Page gutter, used by every section. */
+  .wrap {
+    @apply mx-auto w-full max-w-site px-5 sm:px-8 lg:px-12;
+  }
+
+  /* Small uppercase label above sections and in meta rows. */
+  .eyebrow {
+    @apply text-xs font-medium uppercase tracking-[0.14em] text-muted;
+  }
+
+  /* Text link: hairline underline that darkens on hover. */
+  .link {
+    @apply underline decoration-line decoration-1 underline-offset-[0.2em] transition-colors duration-200 hover:decoration-fg;
   }
 }

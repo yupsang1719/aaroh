@@ -1,8 +1,18 @@
+/// <reference types="vitest/config" />
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+// <Logo /> uses the SVG when this file exists, otherwise the text wordmark.
+// Checked at build time (and when the dev server starts), so adding a logo needs a rebuild.
+const hasLogo = existsSync(fileURLToPath(new URL('./public/brand/logo.svg', import.meta.url)));
+
 export default defineConfig({
   plugins: [react()],
+  define: {
+    __HAS_LOGO__: JSON.stringify(hasLogo),
+  },
   server: {
     port: 5173,
     proxy: {
@@ -14,5 +24,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+  },
+  test: {
+    include: ['src/**/*.test.ts'],
   },
 });
