@@ -1,0 +1,10 @@
+# Local development database. Production uses MongoDB Atlas.
+services:
+  mongo:
+    image: mongo:7
+    ports:
+      - '27017:27017'
+    volumes:
+      - aaroh-mongo:/data/db
+volumes:
+  aaroh-mongo:
