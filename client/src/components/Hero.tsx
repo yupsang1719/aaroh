@@ -44,7 +44,7 @@ function Collage({ images }: { images: SiteSettings['hero']['collageImages'] }) 
         {images.slice(0, PLACEMENTS.length).map((image, i) => (
           <li
             key={image.url}
-            className={cn('group relative animate-rise overflow-hidden bg-line', PLACEMENTS[i])}
+            className={cn('group relative animate-rise overflow-hidden bg-leaf-tint', PLACEMENTS[i])}
             style={{ animationDelay: `${120 + i * 90}ms` }}
           >
             <Img
@@ -112,22 +112,22 @@ function HeroVideo({ src, poster }: { src: string; poster?: string }) {
 }
 
 /**
- * No images yet: a dark "ink" panel with the wordmark, the tagline in serif italic, a slow warm
- * glow and the rising-scale motif. The wordmark is the largest element and is never animated,
+ * No images yet: a dark "ink" panel with the wordmark, the tagline in serif italic, slow sunset
+ * and leaf glows and the rising-scale motif. The wordmark is the largest element and is never animated,
  * so it paints at once (good for Largest Contentful Paint).
  */
 function InkHero({ tagline }: { tagline: string }) {
   return (
     <div className="wrap">
       <div className="on-ink grain relative isolate flex min-h-[64svh] flex-col justify-between overflow-hidden rounded-[1.75rem] px-6 py-8 md:min-h-[74svh] md:rounded-[2.5rem] md:px-14 md:py-14">
-        {/* Warm glows drifting slowly (plain gradients: cheap to animate). */}
+        {/* Sunset and leaf glows drifting slowly (plain gradients: cheap to animate). */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -right-[20%] -top-[30%] -z-10 aspect-square w-[85%] animate-drift rounded-full bg-[radial-gradient(circle,rgba(184,63,18,0.55),transparent_62%)] md:w-[60%]"
+          className="pointer-events-none absolute -right-[20%] -top-[30%] -z-10 aspect-square w-[85%] animate-drift rounded-full bg-[radial-gradient(circle,rgba(246,205,151,0.32),transparent_62%)] md:w-[60%]"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -bottom-[35%] -left-[15%] -z-10 aspect-square w-[80%] animate-drift rounded-full bg-[radial-gradient(circle,rgba(224,168,75,0.38),transparent_60%)] [animation-delay:-9s] md:w-[55%]"
+          className="pointer-events-none absolute -bottom-[35%] -left-[15%] -z-10 aspect-square w-[80%] animate-drift rounded-full bg-[radial-gradient(circle,rgba(143,179,164,0.30),transparent_60%)] [animation-delay:-9s] md:w-[55%]"
         />
 
         <div className="flex items-start justify-between gap-6">

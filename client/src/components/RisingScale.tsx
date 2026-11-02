@@ -13,7 +13,7 @@ export function RisingScale({ className }: { className?: string }) {
       {NOTES.map((note, i) => (
         <div key={note} className="flex h-full flex-col items-center justify-end gap-2">
           <span
-            className="block w-1.5 origin-bottom animate-meter rounded-full bg-gold md:w-2"
+            className="block w-1.5 origin-bottom animate-meter rounded-full bg-gradient-to-t from-leaf-light to-gold md:w-2"
             style={{
               height: `${34 + i * 11}%`,
               animationDelay: `${i * 0.16}s`,

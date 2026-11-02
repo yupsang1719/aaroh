@@ -10,7 +10,7 @@ export function Marquee({ items }: { items: string[] }) {
           <span className="whitespace-nowrap px-6 font-serif text-serif-md italic md:px-10">
             {item}
           </span>
-          <span className="text-accent">✦</span>
+          <span className="text-leaf">✦</span>
         </li>
       ))}
     </ul>

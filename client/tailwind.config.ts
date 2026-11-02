@@ -3,23 +3,31 @@ import type { Config } from 'tailwindcss';
 /**
  * Brand tokens. Change colours, fonts and motion here and the whole site follows.
  * Light areas use bg/fg/muted/line/accent; dark "ink" areas (home hero, footer) use
- * ink/ink-fg/ink-muted/ink-line/gold. All text pairs meet WCAG AA contrast.
+ * ink/ink-fg/ink-muted/ink-line/gold/sunset/leaf-light. All text pairs meet WCAG AA contrast.
  */
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        bg: '#F4EFE6', // warm ivory ground
-        fg: '#16130F', // warm near-black text (16:1 on bg)
-        muted: '#5D574F', // secondary text (6.2:1 on bg)
-        line: '#DDD5C8', // hairlines and borders
-        accent: '#B83F12', // ember: links, highlights (4.9:1 on bg)
-        ink: '#14110E', // dark sections
-        'ink-fg': '#F4EFE6', // text on ink (16:1)
-        'ink-muted': '#A8A095', // secondary text on ink (7.3:1)
-        'ink-line': '#2E2924', // hairlines on ink
-        gold: '#E0A84B', // saffron gold, on ink only (8.8:1)
+        // Taken from the brand reference (public/brand/ref.jpeg): cream paper, deep teal
+        // wordmark ink, antique gold and a sunset peach.
+        bg: '#F6EFE2', // cream paper ground
+        fg: '#0B2626', // deep teal ink, the wordmark colour (13.9:1 on bg)
+        muted: '#4B5C59', // secondary text, teal grey (6.2:1 on bg)
+        line: '#E0D5C1', // hairlines and borders
+        accent: '#7E5B25', // antique gold, deepened for text: links, highlights (5.4:1 on bg)
+        ink: '#0B2626', // dark sections: deep teal
+        'ink-fg': '#F6EFE2', // text on ink (13.9:1)
+        'ink-muted': '#A7B4AE', // secondary text on ink (7.4:1)
+        'ink-line': '#1F3B3A', // hairlines on ink
+        gold: '#CFA35E', // bright antique gold, on ink only (6.9:1)
+        sunset: '#F6CD97', // sunset peach: decorative glows on ink (10.7:1)
+        // Leaf green from the reference's foliage: the calm, secondary colour. Gold marks
+        // what you can act on; green sets a quieter mood (numbers, ornaments, surfaces).
+        leaf: '#46645D', // sage leaf, text and ornaments on bg (5.7:1)
+        'leaf-tint': '#E2E8E0', // pale sage surface: image wells, soft bands (fg 12.8:1)
+        'leaf-light': '#8FB3A4', // light leaf, on ink only (6.9:1)
       },
       fontFamily: {
         display: ['"Inter Tight Variable"', '"Inter Tight"', 'system-ui', 'sans-serif'],

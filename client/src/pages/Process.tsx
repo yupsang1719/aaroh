@@ -32,7 +32,7 @@ export default function ProcessPage() {
               {steps.map((step, i) => (
                 <span key={step.title} className="flex items-baseline gap-3">
                   <span className="text-fg">{step.title}</span>
-                  {i < steps.length - 1 && <span className="text-accent">→</span>}
+                  {i < steps.length - 1 && <span className="text-leaf">→</span>}
                 </span>
               ))}
             </p>
@@ -44,7 +44,7 @@ export default function ProcessPage() {
                 <Reveal className="grid gap-6 pb-10 md:grid-cols-12 md:gap-10 md:pb-16">
                   {/* Hairline that draws in as the step scrolls into view. */}
                   <div aria-hidden="true" className="draw h-px bg-fg/25 md:col-span-12" />
-                  <p className="font-serif text-serif-md italic leading-none text-accent md:col-span-2 md:pt-2">
+                  <p className="font-serif text-serif-md italic leading-none text-leaf md:col-span-2 md:pt-2">
                     {number(i)}
                   </p>
                   <div className={cn(step.imageUrl ? 'md:col-span-4' : 'md:col-span-6')}>
@@ -52,7 +52,7 @@ export default function ProcessPage() {
                     {step.text && <p className="mt-4 text-lg text-muted">{step.text}</p>}
                   </div>
                   {step.imageUrl && (
-                    <div className="overflow-hidden bg-line md:col-span-6">
+                    <div className="overflow-hidden bg-leaf-tint md:col-span-6">
                       <Img
                         src={step.imageUrl}
                         alt={step.imageAlt ?? ''}

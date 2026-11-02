@@ -35,7 +35,7 @@ export default function WorkPage() {
                   to={`/work/${release.slug}`}
                   className="group grid gap-6 md:grid-cols-12 md:gap-10"
                 >
-                  <div className="overflow-hidden bg-line md:col-span-7">
+                  <div className="overflow-hidden bg-leaf-tint md:col-span-7">
                     <Img
                       src={release.coverImage.url}
                       alt={release.coverImage.alt}

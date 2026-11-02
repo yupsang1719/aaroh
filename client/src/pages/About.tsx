@@ -60,7 +60,7 @@ export default function AboutPage() {
             {team.map((member, i) => (
               <li key={`${member.name}-${i}`}>
                 <Reveal delay={(i % 4) * 80}>
-                  <div className="overflow-hidden bg-line">
+                  <div className="overflow-hidden bg-leaf-tint">
                     {member.photoUrl ? (
                       <Img
                         src={member.photoUrl}
