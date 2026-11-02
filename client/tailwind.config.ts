@@ -90,10 +90,16 @@ export default {
           '0%, 100%': { transform: 'scaleY(var(--meter-low, 0.35))' },
           '50%': { transform: 'scaleY(1)' },
         },
-        // The header icon playing the scale: each dot hops once, like a note being sung.
-        swara: {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '40%': { transform: 'translateY(-14px)' },
+        // The header icon's dots, like notes played softly one by one. `note-in`: a dot appears
+        // (fades in, swells a little, settles). `note`: a dot already there sounds once.
+        'note-in': {
+          '0%': { opacity: '0', transform: 'scale(0.5)' },
+          '60%': { opacity: '1', transform: 'scale(1.12)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        note: {
+          '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+          '35%': { opacity: '0.75', transform: 'scale(1.28)' },
         },
         marquee: {
           from: { transform: 'translate3d(0, 0, 0)' },
@@ -106,7 +112,8 @@ export default {
         drift: 'drift 22s ease-in-out infinite',
         meter: 'meter 2.6s ease-in-out infinite',
         marquee: 'marquee 40s linear infinite',
-        swara: 'swara 420ms ease-in-out both',
+        'note-in': 'note-in 800ms cubic-bezier(0.22, 1, 0.36, 1) both',
+        note: 'note 650ms ease-in-out both',
       },
     },
   },

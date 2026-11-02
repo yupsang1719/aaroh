@@ -11,11 +11,10 @@ export function Logo({ className }: { className?: string }) {
   );
 }
 
-/** Delay between one dot and the next: in the flatten / rise, and in the scale. */
-const STEP_MS = 60;
-const NOTE_MS = 90;
-/** The flatten / rise takes about this long, so the scale starts once the dots have settled. */
-const SETTLE_MS = 650;
+/** Time between one note (dot) and the next. */
+const NOTE_MS = 180;
+/** After a change of place the dots rest, hidden, for a moment before the notes come in. */
+const REST_MS = 180;
 
 /**
  * The brand icon: seven dots rising from bottom left to top right, read from /brand/icon.svg at
@@ -23,12 +22,13 @@ const SETTLE_MS = 650;
  * Decorative: it always sits next to the name. The dots take the text colour; the top dot keeps
  * its gold. Size it with a height class.
  *
- * `flat`: the dots settle into a level, evenly spaced row, one after another from the left, and
- * rise back from the right when it turns off.
+ * `flat`: the dots lie in a level, evenly spaced row instead.
  *
- * The dots also "play the scale" (Sa Re Ga Ma Pa Dha Ni): each hops once in turn, ending on the
- * gold Ni. It plays on load, after each flatten or rise, and whenever `play` changes (the header
- * bumps it on hover and focus). It never loops. With reduced motion, nothing moves (index.css).
+ * The dots move like notes played softly, Sa Re Ga Ma Pa Dha Ni: on load and whenever `flat`
+ * changes, they come in one by one, each fading in and swelling gently into place (they change
+ * places while hidden, so nothing slides). When `play` changes (the header bumps it on hover
+ * and focus), each dot sounds once in turn where it is. Nothing loops; with reduced motion the
+ * dots simply appear (index.css).
  */
 export function BrandIcon({
   flat = false,
@@ -40,17 +40,16 @@ export function BrandIcon({
   className?: string;
 }) {
   // A change of `flat` or `play` gives the dots a new key, which remounts them and restarts their
-  // animation. After a flatten or rise the scale waits for the dots to settle; on hover it
-  // starts at once. (State adjusted while rendering, as React recommends over an effect.)
-  const [last, setLast] = useState({ flat, play, delay: SETTLE_MS });
+  // animation: `note-in` after a change of place, `note` on hover. (State adjusted while
+  // rendering, as React recommends over an effect.)
+  const [last, setLast] = useState({ flat, play, sound: false });
   if (last.flat !== flat || last.play !== play) {
-    setLast({ flat, play, delay: last.play !== play ? 0 : SETTLE_MS });
+    setLast({ flat, play, sound: last.flat === flat });
   }
   const runKey = `${flat}-${play}`;
 
   const icon = __BRAND_ICON__;
   if (!icon) return null;
-  const lastDot = icon.dots.length - 1;
 
   return (
     <svg
@@ -60,27 +59,19 @@ export function BrandIcon({
       className={cn('w-auto shrink-0 overflow-visible', className)}
     >
       {icon.dots.map((dot, i) => (
-        // The group moves the dot between its rising and flat places; the dot inside hops.
-        <g
-          key={i}
-          // A slight overshoot, so each dot settles into place.
-          className="transition-transform duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)]"
+        <circle
+          key={`${runKey}-${i}`}
+          cx={flat ? dot.flat.x : dot.cx}
+          cy={flat ? dot.flat.y : dot.cy}
+          r={dot.r}
+          className={last.sound ? 'animate-note' : 'animate-note-in'}
           style={{
-            transform: flat
-              ? `translate(${dot.flat.x - dot.cx}px, ${dot.flat.y - dot.cy}px)`
-              : 'none',
-            transitionDelay: `${(flat ? i : lastDot - i) * STEP_MS}ms`,
+            fill: dot.fill,
+            transformBox: 'fill-box',
+            transformOrigin: 'center',
+            animationDelay: `${(last.sound ? 0 : REST_MS) + i * NOTE_MS}ms`,
           }}
-        >
-          <circle
-            key={runKey}
-            cx={dot.cx}
-            cy={dot.cy}
-            r={dot.r}
-            className="animate-swara"
-            style={{ fill: dot.fill, animationDelay: `${last.delay + i * NOTE_MS}ms` }}
-          />
-        </g>
+        />
       ))}
     </svg>
   );
