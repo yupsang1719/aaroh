@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Editable source: live text. Needs Cormorant Garamond SemiBold and Jost Medium installed
+     (see ../fonts). The final files in ../svg have the text outlined and do not. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 490.11 454.77">
+  <title>Aaroh Entertainment Limited</title>
+  <circle cx="139.08" cy="241.28" r="10.66" fill="#163A37"/>
+  <circle cx="167.07" cy="217.28" r="12.26" fill="#163A37"/>
+  <circle cx="196.4" cy="194.62" r="13.86" fill="#163A37"/>
+  <circle cx="228.39" cy="170.63" r="15.46" fill="#163A37"/>
+  <circle cx="261.72" cy="145.3" r="17.06" fill="#163A37"/>
+  <circle cx="296.38" cy="115.97" r="18.66" fill="#163A37"/>
+  <circle cx="336.37" cy="75.98" r="25.33" fill="#B8893A"/>
+  <text x="51.26" y="366.2" font-family="Cormorant Garamond" font-weight="600" font-size="100" letter-spacing="8" fill="#163A37">AAROH</text>
+  <text x="48.66" y="403.25" font-family="Jost" font-weight="500" font-size="24.9" letter-spacing="16.93" fill="#163A37">ENTERTAINMENT</text>
+</svg>

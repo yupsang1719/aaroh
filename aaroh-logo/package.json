@@ -1,0 +1,17 @@
+{
+  "name": "aaroh-logo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Aaroh Entertainment Limited logo asset pack generator",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@resvg/resvg-js": "2.6.2",
+    "opentype.js": "1.3.4",
+    "pdfkit": "0.15.2",
+    "png-to-ico": "2.1.8"
+  }
+}
