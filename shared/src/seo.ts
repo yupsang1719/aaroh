@@ -9,7 +9,7 @@ export const SITE_NAME = 'Aaroh';
 
 // Default description, used when a page has nothing more specific.
 export const DEFAULT_DESCRIPTION =
-  'Aaroh Entertainment is an independent music and film company making original songs and the music videos that go with them.';
+  'Aaroh Entertainment is an independent house for original music and the films made with it.';
 
 /** Default share image: a 1200×630 PNG, the size link previews expect. */
 export const DEFAULT_SHARE_IMAGE = '/brand/og-default.png';
@@ -44,14 +44,14 @@ export function staticPageMeta(page: StaticPage, settings?: SiteSettings | null)
     case 'work':
       return {
         title: 'Work',
-        description: 'Every Aaroh release: an original song and the music video made for it.',
+        description: 'Aaroh releases: original songs and the films made with them.',
         type: 'website',
       };
     case 'process':
       return {
         title: 'Process',
         description:
-          'How an Aaroh release comes together: idea, demo, studio, shoot, edit, release.',
+          'From a single note to the finished film: idea, demo, studio, shoot, edit, release.',
         type: 'website',
       };
     case 'about':
@@ -64,7 +64,7 @@ export function staticPageMeta(page: StaticPage, settings?: SiteSettings | null)
       return {
         title: 'Contact',
         description:
-          'Get in touch with Aaroh about collaborations, press, licensing or anything else.',
+          'Write to Aaroh about collaborations, press, licensing, or simply to say hello.',
         type: 'website',
       };
     case 'privacy':

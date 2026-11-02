@@ -7,14 +7,8 @@ import { FeaturedRelease } from '../components/FeaturedRelease';
 import { Reveal } from '../components/Reveal';
 import { useReleases, useSettings } from '../lib/useApi';
 
-// What Aaroh does (the company's registered activities), shown in the band under the hero.
-const WHAT_WE_DO = [
-  'Original music',
-  'Music videos',
-  'Sound recording',
-  'Film production',
-  'Post-production',
-];
+// What Aaroh works with, in a word each, shown in the band under the hero.
+const WHAT_WE_DO = ['Song', 'Sound', 'Image', 'Motion', 'Light'];
 
 export default function HomePage() {
   const settings = useSettings();
@@ -55,9 +49,9 @@ export default function HomePage() {
               </p>
               <ul className="flex flex-wrap gap-x-8 gap-y-3 text-lg font-medium md:col-span-4 md:col-start-9 md:flex-col">
                 {[
-                  { to: '/about', label: 'About us' },
-                  { to: '/process', label: 'How we work' },
-                  { to: '/contact', label: 'Get in touch' },
+                  { to: '/about', label: 'The story' },
+                  { to: '/process', label: 'The process' },
+                  { to: '/contact', label: 'Say hello' },
                 ].map((item) => (
                   <li key={item.to}>
                     <Link to={item.to} className="group inline-flex items-center gap-2">

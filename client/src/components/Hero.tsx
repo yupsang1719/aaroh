@@ -134,9 +134,7 @@ function InkHero({ tagline }: { tagline: string }) {
         />
 
         <div className="flex items-start justify-between gap-6">
-          <p className="eyebrow animate-rise [animation-delay:150ms]">
-            Independent music &amp; film
-          </p>
+          <p className="eyebrow animate-rise [animation-delay:150ms]">Music &amp; moving image</p>
           <RisingScale className="h-16 md:h-28" />
         </div>
 

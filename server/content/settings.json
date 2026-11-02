@@ -1,7 +1,7 @@
 {
   "_comment": "Live site content. Replace every PLACEHOLDER value: production refuses to start until none are left (check with `npm run check:content`). Images go in content/media/ and are referenced as /media/<file>.",
   "companyName": "Aaroh",
-  "tagline": "Original music and the films that go with it.",
+  "tagline": "Music that rises. Films that hold it.",
   "hero": {
     "_comment": "With no collageImages the home page shows the wordmark on its own. Add 3 to 6 stills/photos to get the collage, or set mode to \"video\" with videoUrl and posterUrl.",
     "mode": "collage",
@@ -10,8 +10,8 @@
     "collageImages": []
   },
   "about": {
-    "intro": "Aaroh Entertainment is an independent music and film company. We write and record original songs, and make the music videos that go with them.",
-    "story": "In Indian classical music, aaroh is the rising scale: the climb from one note to the next. We work the same way, step by step, from a first idea to a finished song and film.\n\nWe started Aaroh because we believe a song and its film should be made together, by the same people, with the same care. So we handle the whole journey ourselves: writing, recording and producing the music, then shooting the video and finishing it in post-production.\n\nWe are a new company and only just getting started. If you are an artist, musician, director, cinematographer or editor and want to make something with us, we would love to hear from you.",
+    "intro": "Aaroh is a house for music and the moving image. We write the song, then find its light.",
+    "story": "Aaroh is the ascending scale: Sa, Re, Ga, Ma, Pa, Dha, Ni. Each note a step towards the next. We work the same way, patiently and note by note, until a song and its film arrive as one.\n\nHere, sound and picture are made together, shaped by the same hands and held to the same quiet standard. From the first hum to the final frame.\n\nWe are at the beginning. If something here speaks to you, write to us.",
     "location": "Surrey, United Kingdom"
   },
   "_teamComment": "Team members appear on the About page: { \"name\": \"…\", \"role\": \"…\", \"photoUrl\": \"/media/name.jpg\" }. Leave empty to hide the section.",
@@ -19,27 +19,27 @@
   "processSteps": [
     {
       "title": "Idea",
-      "text": "Every release starts with a song and a picture of the film that could go with it. We develop the two together from the very beginning."
+      "text": "A melody, and the image it carries. They arrive together."
     },
     {
       "title": "Demo",
-      "text": "We sketch the song quickly and roughly to find its shape and feel, and the story the video should tell."
+      "text": "A rough sketch. Finding the shape before the detail."
     },
     {
       "title": "Studio",
-      "text": "Recording, arranging, producing and mixing the final track, so it is ready for release and for the edit."
+      "text": "The song takes its final form: arranged, recorded, refined."
     },
     {
       "title": "Shoot",
-      "text": "We plan and produce the music video around the finished song, with a small crew and a clear idea."
+      "text": "Light, movement and place, composed around the music."
     },
     {
       "title": "Edit",
-      "text": "Post-production: cutting the film to the music, then colour grading, sound and finishing."
+      "text": "Picture meets sound. Cut, coloured, finished."
     },
     {
       "title": "Release",
-      "text": "The song and the film come out together on the same day, on streaming services and on YouTube."
+      "text": "Song and film, released as one."
     }
   ],
   "contactEmail": "rlp@aaroh.co.uk",
@@ -47,7 +47,7 @@
   "contactFormEnabled": false,
   "_socialsComment": "Add full profile URLs (https://…) for instagram, youtube, tiktok, spotify. Empty ones are not shown.",
   "socials": {},
-  "workEmptyNote": "Our first release is on its way.",
+  "workEmptyNote": "The first note is close.",
   "legal": {
     "_comment": "As registered at Companies House (company 17498033, https://find-and-update.company-information.service.gov.uk/company/17498033). Shown in the footer of every page and on /legal (UK trading disclosure rules). Update if the registered office changes.",
     "companyName": "Aaroh Entertainment Limited",

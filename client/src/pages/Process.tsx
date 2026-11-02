@@ -16,10 +16,7 @@ export default function ProcessPage() {
   return (
     <>
       <Seo meta={staticPageMeta('process')} />
-      <PageHeader
-        title="Process"
-        intro="How a release comes together, from the first idea to the day it comes out."
-      />
+      <PageHeader title="Process" intro="From a single note to the finished film." />
 
       {settings.status === 'loading' && <PageLoading />}
       {settings.status === 'error' && <PageError error={settings.error} />}

@@ -20,8 +20,8 @@ export default function ContactPage() {
         title="Contact"
         intro={
           formEnabled
-            ? 'For collaborations, press, licensing or anything else, send us a message.'
-            : 'For collaborations, press, licensing or anything else, email us directly.'
+            ? 'Collaborations, press, licensing, or simply hello. Leave us a note.'
+            : 'Collaborations, press, licensing, or simply hello. Write to us.'
         }
       />
 

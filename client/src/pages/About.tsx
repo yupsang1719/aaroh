@@ -28,7 +28,7 @@ export default function AboutPage() {
             {about.story && (
               <Reveal as="section" aria-labelledby="why" className="lg:col-span-7">
                 <h2 id="why" className="eyebrow">
-                  Why we started
+                  The rising scale
                 </h2>
                 <div className="mt-6 space-y-6 text-lg leading-relaxed md:text-xl md:leading-relaxed">
                   {paragraphs(about.story).map((p, i) => (
@@ -42,7 +42,7 @@ export default function AboutPage() {
             {about.location && (
               <Reveal as="section" aria-labelledby="where" className="lg:col-span-4 lg:col-start-9">
                 <h2 id="where" className="eyebrow">
-                  Where we are
+                  Home
                 </h2>
                 <p className="mt-6 font-serif text-serif-md italic">{about.location}</p>
               </Reveal>
@@ -54,7 +54,7 @@ export default function AboutPage() {
       {team.length > 0 && (
         <section aria-labelledby="team" className="wrap mt-20 md:mt-32">
           <h2 id="team" className="eyebrow border-t border-line pt-5">
-            The team
+            The people
           </h2>
           <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 md:mt-12 md:gap-x-6 lg:grid-cols-4">
             {team.map((member, i) => (

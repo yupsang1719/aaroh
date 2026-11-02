@@ -99,11 +99,9 @@ export function ContactForm() {
     return (
       <div role="status" className="border-t border-fg pt-8">
         <h2 ref={sentRef} tabIndex={-1} className="font-display text-display-sm font-semibold">
-          Thank you. Your message is on its way.
+          Thank you. Your note is on its way.
         </h2>
-        <p className="mt-4 text-lg text-muted">
-          We read everything and will reply as soon as we can.
-        </p>
+        <p className="mt-4 text-lg text-muted">We read every message, and reply soon.</p>
         <button type="button" className="link mt-8 text-lg" onClick={() => setStatus('idle')}>
           Send another message
         </button>

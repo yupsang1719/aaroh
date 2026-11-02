@@ -13,7 +13,7 @@ export function Footer() {
       {showContact && (
         <div className="wrap grid gap-12 py-12 sm:grid-cols-2 md:py-16 lg:grid-cols-12">
           <div className="sm:col-span-2 lg:col-span-7">
-            <p className="eyebrow">Get in touch</p>
+            <p className="eyebrow">Write to us</p>
             {settings && (
               <a
                 href={`mailto:${settings.contactEmail}`}

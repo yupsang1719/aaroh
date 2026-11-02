@@ -20,7 +20,7 @@ export function PageError({ error }: { error: Error }) {
         meta={notFound ? NOT_FOUND_META : { ...NOT_FOUND_META, title: 'Something went wrong' }}
       />
       <h1 className="font-display text-display-lg font-semibold">
-        {notFound ? 'Page not found' : 'Something went wrong'}
+        {notFound ? 'Off the scale' : 'Something went wrong'}
       </h1>
       <p className="mt-6 max-w-xl text-lg text-muted">
         {notFound

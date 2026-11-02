@@ -6,26 +6,26 @@ import type { ContactType } from '@aaroh/shared/contact-types';
 const TOPICS: Array<{ type: ContactType; title: string; text: string; subject: string }> = [
   {
     type: 'general',
-    title: 'General enquiries',
-    text: 'Questions about Aaroh, our work or our releases.',
+    title: 'General',
+    text: 'A question, a thought, a hello.',
     subject: 'General enquiry',
   },
   {
     type: 'collaboration',
     title: 'Collaborations',
-    text: 'Artists, musicians, directors and crews who want to make something with us.',
+    text: 'Artists, directors and crews with something to make.',
     subject: 'Collaboration enquiry',
   },
   {
     type: 'press',
     title: 'Press',
-    text: 'Interviews, features and press information.',
+    text: 'Interviews, features and press materials.',
     subject: 'Press enquiry',
   },
   {
     type: 'licensing',
     title: 'Licensing',
-    text: 'Using our music or films in your own project.',
+    text: 'Our music and films, in your work.',
     subject: 'Licensing enquiry',
   },
 ];
@@ -69,7 +69,7 @@ export function EmailContact({ email }: { email: string }) {
           href={mailto(email)}
           className="inline-flex items-center gap-2 rounded-full bg-fg px-7 py-3.5 text-base font-medium text-bg transition-colors duration-200 hover:bg-accent"
         >
-          Email us
+          Write to us
           <span aria-hidden="true">→</span>
         </a>
         <button
@@ -85,7 +85,7 @@ export function EmailContact({ email }: { email: string }) {
         </p>
       </div>
 
-      <h2 className="eyebrow mt-16 md:mt-20">Or start with a topic</h2>
+      <h2 className="eyebrow mt-16 md:mt-20">Or choose a subject</h2>
       <ul className="mt-4 border-t border-line">
         {TOPICS.map((topic) => (
           <li key={topic.type} className="border-b border-line">

@@ -15,7 +15,7 @@ export default function WorkPage() {
   return (
     <>
       <Seo meta={staticPageMeta('work')} />
-      <PageHeader title="Work" intro="Each release is an original song and the film made for it." />
+      <PageHeader title="Work" intro="Each release, a song and its film." />
 
       {releases.status === 'loading' && <PageLoading />}
       {releases.status === 'error' && <PageError error={releases.error} />}
