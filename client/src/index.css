@@ -5,6 +5,8 @@
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
+    /* In-page jumps (e.g. "Skip to content") land below the sticky header. */
+    scroll-padding-top: 5rem;
     text-rendering: optimizeLegibility;
   }
 

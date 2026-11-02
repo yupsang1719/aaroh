@@ -5,5 +5,9 @@ interface ImportMetaEnv {
   readonly VITE_API_BASE?: string;
 }
 
-/** True when client/public/brand/logo.svg existed at build (or dev-server start) time. */
-declare const __HAS_LOGO__: boolean;
+/** The brand icon's dots, read from client/public/brand/icon.svg at build time (null if absent). */
+declare const __BRAND_ICON__: {
+  viewBox: string;
+  /** `flat`: the dot's centre when the icon lies flat. */
+  dots: { cx: number; cy: number; r: number; fill: string; flat: { x: number; y: number } }[];
+} | null;

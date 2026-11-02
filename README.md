@@ -351,12 +351,15 @@ Run from the repository root.
 ## Changing the look
 
 - **Colours, fonts and type sizes** are all in `client/tailwind.config.ts`.
-- **Logo:** save it as `client/public/brand/logo.svg`; it replaces the "Aaroh" wordmark
-  everywhere automatically on the next build. Draw it with a height that suits text: it is
-  displayed 1em tall.
-- **Favicon and share image:** replace `client/public/brand/favicon.svg`, `apple-touch-icon.png`
-  (180×180), `icon-512.png` (512×512, used as the logo in search results) and
-  `og-default.png` (1200×630, the share image for pages without their own).
+- **Logo and icons** come from the logo pack in `aaroh-logo/` (see its README). Its generator
+  also writes the website's files: `client/public/brand/icon.svg` (the dots beside the name in
+  the header; the name itself is text in the display font), `favicon.svg`, `apple-touch-icon.png`, `icon-192.png`, `icon-512.png`
+  (the logo in search results), `og-default.png` (1200×630, the share image for pages without
+  their own), plus `client/public/favicon.ico` and `site.webmanifest`. To change the logo or a
+  brand colour, edit `aaroh-logo/scripts/build.mjs`, run `npm run build` in `aaroh-logo/`, then
+  rebuild the site. The icon's dots use `var(--logo-ink)` (the site sets it to the text
+  colour) and its gold dot `var(--logo-accent)`.
+- Keep the site colour tokens in `client/tailwind.config.ts` in step with the brand colours.
 
 ## Moving content to a CMS later
 

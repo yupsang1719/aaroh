@@ -44,7 +44,10 @@ function Collage({ images }: { images: SiteSettings['hero']['collageImages'] }) 
         {images.slice(0, PLACEMENTS.length).map((image, i) => (
           <li
             key={image.url}
-            className={cn('group relative animate-rise overflow-hidden bg-leaf-tint', PLACEMENTS[i])}
+            className={cn(
+              'group relative animate-rise overflow-hidden bg-leaf-tint',
+              PLACEMENTS[i],
+            )}
             style={{ animationDelay: `${120 + i * 90}ms` }}
           >
             <Img

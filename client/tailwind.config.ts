@@ -10,24 +10,26 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Taken from the brand reference (public/brand/ref.jpeg): cream paper, deep teal
-        // wordmark ink, antique gold and a sunset peach.
-        bg: '#F6EFE2', // cream paper ground
-        fg: '#0B2626', // deep teal ink, the wordmark colour (13.9:1 on bg)
-        muted: '#4B5C59', // secondary text, teal grey (6.2:1 on bg)
-        line: '#E0D5C1', // hairlines and borders
-        accent: '#7E5B25', // antique gold, deepened for text: links, highlights (5.4:1 on bg)
-        ink: '#0B2626', // dark sections: deep teal
-        'ink-fg': '#F6EFE2', // text on ink (13.9:1)
-        'ink-muted': '#A7B4AE', // secondary text on ink (7.4:1)
-        'ink-line': '#1F3B3A', // hairlines on ink
-        gold: '#CFA35E', // bright antique gold, on ink only (6.9:1)
-        sunset: '#F6CD97', // sunset peach: decorative glows on ink (10.7:1)
+        // Brand colours from the logo pack (aaroh-logo/README.md): Ivory, Aaroh Teal, Swara
+        // Gold and Light Gold, plus a sunset peach and leaf greens for mood.
+        bg: '#F7F1E6', // Ivory
+        fg: '#163A37', // Aaroh Teal (11:1 on bg)
+        muted: '#4B5E5B', // secondary text, teal grey (6.1:1 on bg)
+        line: '#E2D8C6', // hairlines and borders
+        // Swara Gold (#B8893A) is too light for text on Ivory (2.8:1), so text uses this
+        // deepened version: links, highlights (5.5:1 on bg).
+        accent: '#7E5B25',
+        ink: '#163A37', // dark sections: Aaroh Teal
+        'ink-fg': '#F7F1E6', // text on ink (11:1)
+        'ink-muted': '#A9BBB5', // secondary text on ink (6.2:1)
+        'ink-line': '#2A504C', // hairlines on ink
+        gold: '#D6AD5C', // Light Gold, on ink only (5.9:1)
+        sunset: '#F6CD97', // sunset peach: decorative glows on ink (8.3:1)
         // Leaf green from the reference's foliage: the calm, secondary colour. Gold marks
         // what you can act on; green sets a quieter mood (numbers, ornaments, surfaces).
-        leaf: '#46645D', // sage leaf, text and ornaments on bg (5.7:1)
-        'leaf-tint': '#E2E8E0', // pale sage surface: image wells, soft bands (fg 12.8:1)
-        'leaf-light': '#8FB3A4', // light leaf, on ink only (6.9:1)
+        leaf: '#46645D', // sage leaf, text and ornaments on bg (5.8:1)
+        'leaf-tint': '#E2E8E0', // pale sage surface: image wells, soft bands (fg 9.9:1)
+        'leaf-light': '#8FB3A4', // light leaf, on ink only (5.4:1)
       },
       fontFamily: {
         display: ['"Inter Tight Variable"', '"Inter Tight"', 'system-ui', 'sans-serif'],
@@ -88,6 +90,11 @@ export default {
           '0%, 100%': { transform: 'scaleY(var(--meter-low, 0.35))' },
           '50%': { transform: 'scaleY(1)' },
         },
+        // The header icon playing the scale: each dot hops once, like a note being sung.
+        swara: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '40%': { transform: 'translateY(-14px)' },
+        },
         marquee: {
           from: { transform: 'translate3d(0, 0, 0)' },
           to: { transform: 'translate3d(-50%, 0, 0)' },
@@ -99,6 +106,7 @@ export default {
         drift: 'drift 22s ease-in-out infinite',
         meter: 'meter 2.6s ease-in-out infinite',
         marquee: 'marquee 40s linear infinite',
+        swara: 'swara 420ms ease-in-out both',
       },
     },
   },

@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink } from 'react-router';
 import { cn } from '../lib/cn';
-import { Logo } from './Logo';
+import { BrandIcon, Logo } from './Logo';
 import { NAV_ITEMS } from './nav';
 
 interface HeaderProps {
@@ -11,8 +11,26 @@ interface HeaderProps {
 
 const DESKTOP = '(min-width: 768px)';
 
+/** True once the page has scrolled past its top. */
+function useScrolled(threshold = 16) {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > threshold);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, [threshold]);
+  return scrolled;
+}
+
 export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
   const buttonRef = useRef<HTMLButtonElement>(null);
+  // Scrolled down: the header stays at the top, compact, showing only the icon.
+  const scrolled = useScrolled();
+  const compact = scrolled && !menuOpen;
+  // Hovering or focusing the home link makes the icon play the scale again.
+  const [plays, setPlays] = useState(0);
+  const playScale = () => setPlays((n) => n + 1);
 
   // While the mobile menu is open: Escape closes it, the page behind does not scroll,
   // and growing to desktop width closes it (the inline nav takes over).
@@ -39,10 +57,38 @@ export function Header({ menuOpen, setMenuOpen }: HeaderProps) {
   const closeMenu = () => setMenuOpen(false);
 
   return (
-    <header className="relative z-50">
-      <div className="wrap flex items-center justify-between py-5 md:py-7">
-        <Link to="/" onClick={closeMenu} className="text-2xl md:text-[1.75rem]">
-          <Logo />
+    <header
+      className={cn(
+        'sticky top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-300',
+        compact
+          ? 'border-line bg-bg/95 backdrop-blur-md supports-[not(backdrop-filter:blur(0))]:bg-bg'
+          : 'border-transparent',
+      )}
+    >
+      <div
+        className={cn(
+          'wrap flex items-center justify-between transition-[padding] duration-300 ease-out',
+          compact ? 'py-3 md:py-4' : 'py-5 md:py-7',
+        )}
+      >
+        <Link
+          to="/"
+          onClick={closeMenu}
+          onMouseEnter={playScale}
+          onFocus={playScale}
+          className="flex items-center text-2xl md:text-[1.75rem]"
+        >
+          <BrandIcon flat={compact} play={plays} className="h-[1.15em]" />
+          {/* Collapses away when scrolled, leaving the icon. It stays in the accessibility tree,
+              so the link is still named "Aaroh". */}
+          <span
+            className={cn(
+              'overflow-hidden whitespace-nowrap transition-[max-width,opacity,margin] duration-300 ease-out',
+              compact ? 'ml-0 max-w-0 opacity-0' : 'ml-[0.4em] max-w-[4em] opacity-100',
+            )}
+          >
+            <Logo />
+          </span>
         </Link>
 
         <nav aria-label="Main" className="hidden md:block">
